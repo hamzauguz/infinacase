@@ -1,9 +1,9 @@
 import React from "react";
 import "./Styles.HeaderButton.css";
 
-const HeaderButton = ({ src, title, basketPlace, basketCount }) => {
+const HeaderButton = ({ src, title, onClick, basketPlace, basketCount }) => {
   return (
-    <div className="header-button">
+    <div onClick={onClick} className="header-button">
       <img src={src} />
       {basketPlace && <div className="count-basket">{basketCount}</div>}
       <span className="header-button-title">{title}</span>
