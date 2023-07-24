@@ -6,32 +6,3 @@
   padding: 0 148px;
   align-items: center;
 }
-
-.header-button {
-  align-items: center;
-  display: flex;
-  border-radius: 10px;
-  padding: 5px 10px;
-}
-
-.header-button:hover {
-  background-color: #e0eae9;
-  cursor: pointer;
-  transition: background-color 0.5s ease;
-}
-
-.header-button-title {
-  color: #349590;
-  font-size: 24px;
-  padding-left: 10px;
-}
-
-.header-right-container {
-  display: flex;
-  flex-direction: row;
-}
-
-/* .price-place {
-  background-color: #c3ecea;
-  color: #349590;
-} */
