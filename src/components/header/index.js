@@ -7,7 +7,12 @@ const Header = () => {
     <div className="header-container">
       <img src={require("../../assets/images/headericon.png")} />
       <div className="header-right-container">
-        <HeaderButton />
+        <HeaderButton
+          src={require("../../assets/images/avatar.png")}
+          //   basketPlace
+          //   basketCount={2}
+          title={"Giriş Yap"}
+        />
       </div>
     </div>
   );

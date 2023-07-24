@@ -25,12 +25,15 @@
 .count-basket {
   position: absolute;
   margin-left: 40px;
-  background-color: beige;
-  height: 20px;
+  background-color: #fff;
+  color: #349590;
+  height: 32px;
   align-items: center;
   justify-content: center;
   display: flex;
-  width: 20px;
+  width: 32px;
   margin-bottom: 1.5em;
-  border-radius: 10px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  font-size: 20px;
 }
