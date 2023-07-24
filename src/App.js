@@ -2,12 +2,16 @@ import React from "react";
 import "./App.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
 const App = () => {
   return (
     <div>
-      <Header />
-      <Footer />
+      <BrowserRouter>
+        <Header />
+        <Routes>{/* <Route path="/login" element={<Login />} /> */}</Routes>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 };
