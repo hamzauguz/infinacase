@@ -9,7 +9,6 @@ const Header = () => {
     <div className="Navbar">
       <img
         className="nav-logo"
-        width={200}
         src={require("../../assets/images/headericon.png")}
       />
 
