@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 import "./Styles.Login.css";
+import LabelWithInput from "../../components/label-with-input";
 
 const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  console.log("email: ", formData.email, formData.password);
 
   return (
     <div className="login-container">
@@ -20,14 +36,20 @@ const Login = () => {
           En uygun fiyatlara ulaşmak <br /> için giriş yapın!
         </span>
         <div className="login-input-container">
-          <div className="label-with-input-container">
-            <span className="label-lwic">E-mailiniz</span>
-            <input className="input-style" />
-          </div>
-          <div className="label-with-input-container">
-            <span className="label-lwic">Şifreniz</span>
-            <input className="input-style" />
-          </div>
+          <LabelWithInput
+            name={"email"}
+            value={formData.email}
+            onChange={handleInputChange}
+            labelTitle={"E-Mailiniz"}
+            type={"text"}
+          />
+          <LabelWithInput
+            name={"password"}
+            value={formData.password}
+            onChange={handleInputChange}
+            labelTitle={"Şifreniz"}
+            type={"password"}
+          />
         </div>
         <span className="login-button">Giriş Yap</span>
       </div>
