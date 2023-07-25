@@ -9,5 +9,13 @@
 .login-right-container {
   width: 440px;
   height: 405px;
-  background-color: red;
+  background-color: bisque;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-right-title {
+  font-size: 32px;
+  color: #2d7672;
+  line-height: 40px;
 }
