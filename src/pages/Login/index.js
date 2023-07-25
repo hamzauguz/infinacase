@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import "./Styles.Login.css";
 import LabelWithInput from "../../components/label-with-input";
+import { login } from "../../helpers/firebaseAuth";
 
 const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
@@ -20,7 +21,14 @@ const Login = () => {
     });
   };
 
-  console.log("email: ", formData.email, formData.password);
+  const handleLogin = async () => {
+    const user = await login(formData.email, formData.password);
+    if (user) {
+      navigate("/", {
+        replace: true,
+      });
+    }
+  };
 
   return (
     <div className="login-container">
@@ -52,7 +60,9 @@ const Login = () => {
           />
         </div>
         <div>
-          <span className="login-register-button">Giriş Yap</span>
+          <span onClick={() => handleLogin()} className="login-register-button">
+            Giriş Yap
+          </span>
           <span
             onClick={() => navigate("/register")}
             className="login-register-button"

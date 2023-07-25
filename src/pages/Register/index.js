@@ -3,12 +3,13 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import "./Styles.Register.css";
 import LabelWithInput from "../../components/label-with-input";
+import { register } from "../../helpers/firebaseAuth";
 
 const Register = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: "",
+    displayName: "",
     email: "",
     password: "",
   });
@@ -23,6 +24,17 @@ const Register = () => {
 
   console.log("email: ", formData.email, formData.password);
 
+  const handleRegister = async () => {
+    await register(
+      formData.email,
+      formData.password,
+      formData.displayName
+    ).then(() => {
+      navigate("/");
+    });
+    // dispatch(loginHandle(user));
+  };
+
   return (
     <div className="login-container">
       <div className="login-right-container register-right-container">
@@ -31,8 +43,8 @@ const Register = () => {
         </span>
         <div className="register-input-container">
           <LabelWithInput
-            name={"fullName"}
-            value={formData.fullName}
+            name={"displayName"}
+            value={formData.displayNamea}
             onChange={handleInputChange}
             labelTitle={"Adınız ve Soyadınız"}
             type={"text"}
@@ -53,7 +65,12 @@ const Register = () => {
           />
         </div>
         <div>
-          <span className="login-register-button">Kayıt Ol</span>
+          <span
+            onClick={() => handleRegister()}
+            className="login-register-button"
+          >
+            Kayıt Ol
+          </span>
           <span
             onClick={() => navigate("/login")}
             className="login-register-button"
