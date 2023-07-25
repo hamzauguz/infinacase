@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import "./Styles.Login.css";
+import "./Styles.Register.css";
 import LabelWithInput from "../../components/label-with-input";
 
-const Login = () => {
+const Register = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     password: "",
   });
@@ -24,18 +25,18 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {!isMobile && (
-        <img
-          className="login-image"
-          src={require("../../assets/images/mobile-login.png")}
-        />
-      )}
-
-      <div className="login-right-container">
+      <div className="login-right-container register-right-container">
         <span className="login-right-title">
-          En uygun fiyatlara ulaşmak <br /> için giriş yapın!
+          En uygun fiyatlara ulaşmak <br /> için kayıt yapın!
         </span>
-        <div className="login-input-container">
+        <div className="register-input-container">
+          <LabelWithInput
+            name={"fullName"}
+            value={formData.fullName}
+            onChange={handleInputChange}
+            labelTitle={"Adınız ve Soyadınız"}
+            type={"text"}
+          />
           <LabelWithInput
             name={"email"}
             value={formData.email}
@@ -52,17 +53,23 @@ const Login = () => {
           />
         </div>
         <div>
-          <span className="login-register-button">Giriş Yap</span>
+          <span className="login-register-button">Kayıt Ol</span>
           <span
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/login")}
             className="login-register-button"
           >
-            Kayıt Ol
+            Giriş Yap
           </span>
         </div>
       </div>
+      {!isMobile && (
+        <img
+          className="login-image"
+          src={require("../../assets/images/mobile-login.png")}
+        />
+      )}
     </div>
   );
 };
 
-export default Login;
+export default Register;
