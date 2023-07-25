@@ -1,3 +1,13 @@
 .login-container {
   background-color: #edf9f8;
+  padding: 0 169px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.login-right-container {
+  width: 440px;
+  height: 405px;
+  background-color: red;
 }
