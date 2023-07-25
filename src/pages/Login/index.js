@@ -1,13 +1,20 @@
 import React from "react";
+import { useMediaQuery } from "react-responsive";
+
 import "./Styles.Login.css";
 
 const Login = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
+
   return (
     <div className="login-container">
-      <img
-        className="login-image"
-        src={require("../../assets/images/mobile-login.png")}
-      />
+      {!isMobile && (
+        <img
+          className="login-image"
+          src={require("../../assets/images/mobile-login.png")}
+        />
+      )}
+
       <div className="login-right-container">
         <span className="login-right-title">
           En uygun fiyatlara ulaşmak <br /> için giriş yapın!

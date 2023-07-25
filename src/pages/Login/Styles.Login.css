@@ -9,6 +9,21 @@
   }
 }
 
+@media (max-width: 700px) {
+  .login-container {
+    padding: 10px 10px !important;
+  }
+  .login-button {
+    font-size: 20px;
+    height: 65px;
+    color: #fff;
+    margin: 0 auto;
+    width: 335px !important;
+  }
+  .login-right-container {
+  }
+}
+
 .login-container {
   background-color: #edf9f8;
   padding: 0 169px;
@@ -20,10 +35,10 @@
 .login-right-container {
   width: 440px;
   height: 405px;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 0 auto;
 }
 
 .login-right-title {
