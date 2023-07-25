@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-
+import { useNavigate } from "react-router-dom";
 import "./Styles.Login.css";
 import LabelWithInput from "../../components/label-with-input";
 
 const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -53,7 +53,12 @@ const Login = () => {
         </div>
         <div>
           <span className="login-register-button">Giriş Yap</span>
-          <span className="login-register-button">Kayıt Ol</span>
+          <span
+            onClick={() => navigate("/register")}
+            className="login-register-button"
+          >
+            Kayıt Ol
+          </span>
         </div>
       </div>
     </div>
