@@ -8,6 +8,7 @@ const Register = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    fullName: "",
     email: "",
     password: "",
   });
@@ -24,11 +25,18 @@ const Register = () => {
 
   return (
     <div className="login-container">
-      <div className="login-right-container">
+      <div className="login-right-container register-right-container">
         <span className="login-right-title">
-          En uygun fiyatlara ulaşmak <br /> için giriş yapın!
+          En uygun fiyatlara ulaşmak <br /> için kayıt yapın!
         </span>
-        <div className="login-input-container">
+        <div className="register-input-container">
+          <LabelWithInput
+            name={"fullName"}
+            value={formData.fullName}
+            onChange={handleInputChange}
+            labelTitle={"Adınız ve Soyadınız"}
+            type={"text"}
+          />
           <LabelWithInput
             name={"email"}
             value={formData.email}
