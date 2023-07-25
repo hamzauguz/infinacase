@@ -1,3 +1,14 @@
+@media (max-width: 1444px) {
+  .login-image {
+    width: 600px !important;
+  }
+}
+@media (max-width: 1200px) {
+  .login-image {
+    width: 400px !important;
+  }
+}
+
 .login-container {
   background-color: #edf9f8;
   padding: 0 169px;
