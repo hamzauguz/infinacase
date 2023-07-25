@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { authenticaton } from "../firebase/config";
 
-export const auth = getAuth(authenticaton);
+const auth = getAuth();
 
 export const register = async (email, password, displayName) => {
   try {
