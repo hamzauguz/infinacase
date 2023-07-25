@@ -51,7 +51,10 @@ const Login = () => {
             type={"password"}
           />
         </div>
-        <span className="login-button">Giriş Yap</span>
+        <div>
+          <span className="login-register-button">Giriş Yap</span>
+          <span className="login-register-button">Kayıt Ol</span>
+        </div>
       </div>
     </div>
   );
