@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { collection, getDocs } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { db } from "../firebase";
+import { db } from "../firebase/config";
 
 export const fetchProducts = createAsyncThunk(
   "books/fetchProducts",
@@ -14,3 +14,18 @@ export const fetchProducts = createAsyncThunk(
     return products;
   }
 );
+
+const products = createSlice({
+  name: "Products",
+  initialState: {
+    productsArray: [],
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+      state.productsArray = action.payload;
+    });
+  },
+});
+
+export default products.reducer;
