@@ -19,3 +19,27 @@
   color: #2d7672;
   line-height: 40px;
 }
+
+.label-with-input-container {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-container:focus {
+  outline: none;
+  border-bottom: 2px solid #2d7672;
+}
+
+.input-container {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+  height: 35px;
+  padding: 1px 10px;
+  font-size: 17px;
+}
+
+.label-lwic {
+  font-size: 16px;
+}
