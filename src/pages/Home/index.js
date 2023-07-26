@@ -7,6 +7,7 @@ import { fetchProducts } from "../../store/product";
 import { RiSearch2Line } from "react-icons/ri";
 import ProductCard from "../../components/product-card";
 import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
+import { addToCart, decrement, increment } from "../../store/cartSlice";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Home = () => {
   };
 
   console.log("user::", user);
-  console.log("products Data::", productData);
+
   const [count, setCount] = useState(0);
 
   return (
@@ -57,6 +58,10 @@ const Home = () => {
       </div> */}
       <div className="products-container">
         {products.map((item, key) => {
+          const addedItem = addedCard.find(
+            (addedItem) => addedItem.id === item.id
+          );
+          const amount = addedItem ? addedItem.quantity : 0;
           return (
             <ProductCard
               key={key}
@@ -64,6 +69,16 @@ const Home = () => {
               productTitle={item.product.title}
               productPrice={item.product.price}
               productQuantity={item.product.quantity}
+              amount={amount}
+              disabledProduct={amount < item.product.quantity}
+              OnIncrementPress={() => {
+                amount == 0
+                  ? dispatch(addToCart(item))
+                  : dispatch(increment(item.id));
+              }}
+              OnDecrementPress={() => {
+                dispatch(decrement(item.id));
+              }}
             />
           );
         })}

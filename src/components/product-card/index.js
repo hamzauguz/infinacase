@@ -9,8 +9,12 @@ const ProductCard = ({
   productTitle,
   productPrice,
   productQuantity,
+  OnIncrementPress,
+  OnDecrementPress,
+  amount,
+  disabledProduct,
 }) => {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(amount);
 
   const [basketIcon, setBasketIcon] = useState(false);
 
@@ -24,9 +28,11 @@ const ProductCard = ({
 
   const handleIncrement = () => {
     setCount(count + 1);
+    OnIncrementPress();
   };
   const handleDecrement = () => {
     setCount(count - 1);
+    OnDecrementPress();
   };
 
   return (
@@ -47,6 +53,7 @@ const ProductCard = ({
         >
           {!count == 0 && (
             <div
+              style={{ pointerEvents: disabledProduct ? "auto" : "none" }}
               onClick={() => handleIncrement()}
               className="product-increment-count"
             >
