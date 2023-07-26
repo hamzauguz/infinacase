@@ -6,6 +6,7 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import MyBasket from "./pages/MyBasket";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/mybasket" element={<MyBasket />} />
         </Routes>
         <Footer />
       </BrowserRouter>
