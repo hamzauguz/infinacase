@@ -48,6 +48,7 @@ const Home = () => {
           <span className="filter-button">Aksesuar</span>
         </div>
       </div>
+      <div className="products-container">a</div>
     </div>
   );
 };
