@@ -30,7 +30,53 @@ const ProductCard = ({
     setCount(count - 1);
   };
 
-  return <div>product card</div>;
+  return (
+    <div className="product-card-container">
+      <img src={require("../../images/productimage.png")} />
+      <div className="product-bottom-container">
+        <div className="product-bottom-left-container">
+          <span className="bottom-left-product-title">{productTitle}</span>
+          <span className="bottom-left-product-price">{productPrice}</span>
+          <span className="bottom-left-product-count">
+            {productQuantity} Adetle Sınırlı
+          </span>
+        </div>
+        <div
+          className={`addtocard-container ${
+            !count == 0 && "open-increment-basket"
+          }`}
+        >
+          {!count == 0 && (
+            <div
+              onClick={() => handleIncrement()}
+              className="product-increment-count"
+            >
+              <AiOutlinePlus color="#C3ECEA" size={35} />
+            </div>
+          )}
+          <div
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => (count == 0 ? handleIncrement() : handleDecrement())}
+            className="product-addtocard-basket"
+          >
+            {!count == 0 && (
+              <div className="product-basket-count">
+                <span className="product-basket-count-style">
+                  {count > 9 ? "9+" : count}
+                </span>
+              </div>
+            )}
+            {!basketIcon || count == 0 ? (
+              <LuShoppingCart size={26} color="#349590" />
+            ) : (
+              <AiOutlineMinus size={30} color="red" />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProductCard;
