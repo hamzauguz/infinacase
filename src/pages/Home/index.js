@@ -6,12 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
 import { RiSearch2Line } from "react-icons/ri";
 import ProductCard from "../../components/product-card";
+import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
+import { addToCart, decrement, increment } from "../../store/cartSlice";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const productData = useSelector((state) => state.product.productsArray);
+  const products = useSelector((state) => state.product.productsArray);
+  const addedCard = useSelector((state) => state.card.card);
+  const totalQuantity = useSelector(selectTotalQuantity);
+  const totalPrice = useSelector(selectTotalPrice);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -25,7 +30,7 @@ const Home = () => {
   };
 
   console.log("user::", user);
-  console.log("products Data::", productData);
+
   const [count, setCount] = useState(0);
 
   return (
@@ -52,7 +57,11 @@ const Home = () => {
         </div>
       </div> */}
       <div className="products-container">
-        {productData.map((item, key) => {
+        {products.map((item, key) => {
+          const addedItem = addedCard.find(
+            (addedItem) => addedItem.id === item.id
+          );
+          const amount = addedItem ? addedItem.quantity : 0;
           return (
             <ProductCard
               key={key}
@@ -60,6 +69,16 @@ const Home = () => {
               productTitle={item.product.title}
               productPrice={item.product.price}
               productQuantity={item.product.quantity}
+              amount={amount}
+              disabledProduct={amount < item.product.quantity}
+              OnIncrementPress={() => {
+                amount == 0
+                  ? dispatch(addToCart(item))
+                  : dispatch(increment(item.id));
+              }}
+              OnDecrementPress={() => {
+                dispatch(decrement(item.id));
+              }}
             />
           );
         })}

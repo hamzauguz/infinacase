@@ -4,6 +4,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import store from "../store";
 import { login as loginHandle, logout as logoutHandle } from "../store/auth";
+import { clear } from "../store/cartSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjnoiyMGTqEKE8t5s4PHfFkx7S_HVKcBA",
@@ -32,5 +33,6 @@ onAuthStateChanged(auth, (user) => {
     );
   } else {
     store.dispatch(logoutHandle());
+    store.dispatch(clear());
   }
 });

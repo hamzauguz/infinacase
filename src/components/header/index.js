@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Styles.Header.css";
 import HeaderButton from "../header-button";
 import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
+import { selectTotalQuantity } from "../../store/selectors";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,11 @@ const Header = () => {
   const navigate = useNavigate();
 
   const [avatarButton, setAvatarButton] = useState(false);
+  const totalQuantity = useSelector(selectTotalQuantity);
+
+  useEffect(() => {
+    setAvatarButton(false);
+  }, [user]);
 
   const handleMouseEnter = () => {
     setAvatarButton(true);
@@ -42,7 +48,7 @@ const Header = () => {
             <HeaderButton
               onClick={() => handleLogout()}
               src={require("../../assets/images/avatar.png")}
-              title={!avatarButton ? user.fullName : "Çıkış Yap"}
+              title={avatarButton ? "Çıkış Yap" : user?.fullName}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             />
@@ -57,8 +63,8 @@ const Header = () => {
             <HeaderButton
               src={require("../../assets/images/basket.png")}
               title={"Sepetim"}
-              basketPlace
-              basketCount={2}
+              basketPlace={!totalQuantity == 0}
+              basketCount={totalQuantity}
             />
           </>
         ) : (
