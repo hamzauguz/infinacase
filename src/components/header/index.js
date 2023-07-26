@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Styles.Header.css";
 import HeaderButton from "../header-button";
 import { useSelector } from "react-redux";
@@ -15,6 +15,10 @@ const Header = () => {
 
   const [avatarButton, setAvatarButton] = useState(false);
   const totalQuantity = useSelector(selectTotalQuantity);
+
+  useEffect(() => {
+    setAvatarButton(false);
+  }, [user]);
 
   const handleMouseEnter = () => {
     setAvatarButton(true);
@@ -44,7 +48,7 @@ const Header = () => {
             <HeaderButton
               onClick={() => handleLogout()}
               src={require("../../assets/images/avatar.png")}
-              title={!avatarButton ? user.fullName : "Çıkış Yap"}
+              title={avatarButton ? "Çıkış Yap" : user?.fullName}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             />
