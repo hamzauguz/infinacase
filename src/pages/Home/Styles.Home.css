@@ -10,11 +10,11 @@
 
 .search-input {
   height: 82px;
-  flex: 0.4;
+  flex: 1;
   min-width: 200px;
   border-radius: 8px;
   border: 2px solid #84c7c4;
-  padding: 0 30px;
+  padding: 0 70px;
   font-size: 26px;
 }
 
@@ -38,4 +38,16 @@
 
   flex: 0.6;
   margin-left: 10px;
+}
+
+.input-with-icon-container {
+  display: flex;
+
+  flex: 0.4;
+}
+
+.input-search-icon {
+  position: absolute;
+  margin-top: 25px;
+  margin-left: 20px;
 }

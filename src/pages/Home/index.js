@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../helpers/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
+import { RiSearch2Line } from "react-icons/ri";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,7 +36,10 @@ const Home = () => {
         </>
       )} */}
       <div className="search-filter-container">
-        <input placeholder="Ne alsan?" className="search-input" />
+        <div className="input-with-icon-container">
+          <RiSearch2Line size={32} className="input-search-icon" />
+          <input placeholder="Ne alsan?" className="search-input" />
+        </div>
         <div className="filter-button-container">
           <span className="filter-button">Teknoloji</span>
           <span className="filter-button">Giyim</span>
