@@ -5,6 +5,7 @@ import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 import "./Styles.ProductCard.css";
 
 const ProductCard = ({
+  productImage,
   productTitle,
   productPrice,
   productQuantity,
@@ -32,7 +33,7 @@ const ProductCard = ({
 
   return (
     <div className="product-card-container">
-      <img src={require("../../images/productimage.png")} />
+      <img className="product-image-style" src={productImage} />
       <div className="product-bottom-container">
         <div className="product-bottom-left-container">
           <span className="bottom-left-product-title">{productTitle}</span>

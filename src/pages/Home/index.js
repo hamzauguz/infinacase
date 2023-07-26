@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Styles.Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../helpers/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
 import { RiSearch2Line } from "react-icons/ri";
+import ProductCard from "../../components/product-card";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const Home = () => {
 
   console.log("user::", user);
   console.log("products Data::", data);
+  const [count, setCount] = useState(0);
+
   return (
     <div>
       {/* home <br />
@@ -35,7 +38,7 @@ const Home = () => {
           <h1>hoşgeldin {user.fullName}</h1>
         </>
       )} */}
-      <div className="search-filter-container">
+      {/* <div className="search-filter-container">
         <div className="input-with-icon-container">
           <RiSearch2Line size={32} className="input-search-icon" />
           <input placeholder="Ne alsan?" className="search-input" />
@@ -47,8 +50,41 @@ const Home = () => {
           <span className="filter-button">Mobilya</span>
           <span className="filter-button">Aksesuar</span>
         </div>
+      </div> */}
+      <div className="products-container">
+        <ProductCard
+          productImage={require("../../assets/productimage.png")}
+          productTitle={"Kulaküstü Kulaklık"}
+          productPrice={"350 TL"}
+          productQuantity={"1245"}
+          count={count}
+          setCount={setCount}
+        />
+        <ProductCard
+          productImage={require("../../assets/productimage.png")}
+          productTitle={"Kulaküstü Kulaklık"}
+          productPrice={"350 TL"}
+          productQuantity={"1245"}
+          count={count}
+          setCount={setCount}
+        />
+        <ProductCard
+          productImage={require("../../assets/productimage.png")}
+          productTitle={"Kulaküstü Kulaklık"}
+          productPrice={"350 TL"}
+          productQuantity={"1245"}
+          count={count}
+          setCount={setCount}
+        />
+        <ProductCard
+          productImage={require("../../assets/productimage.png")}
+          productTitle={"Kulaküstü Kulaklık"}
+          productPrice={"350 TL"}
+          productQuantity={"1245"}
+          count={count}
+          setCount={setCount}
+        />
       </div>
-      <div className="products-container">a</div>
     </div>
   );
 };
