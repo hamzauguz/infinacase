@@ -11,7 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const data = useSelector((state) => state.product.productsArray);
+  const productData = useSelector((state) => state.product.productsArray);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -25,7 +25,7 @@ const Home = () => {
   };
 
   console.log("user::", user);
-  console.log("products Data::", data);
+  console.log("products Data::", productData);
   const [count, setCount] = useState(0);
 
   return (
@@ -52,38 +52,17 @@ const Home = () => {
         </div>
       </div> */}
       <div className="products-container">
-        <ProductCard
-          productImage={require("../../assets/productimage.png")}
-          productTitle={"Kulaküstü Kulaklık"}
-          productPrice={"350 TL"}
-          productQuantity={"1245"}
-          count={count}
-          setCount={setCount}
-        />
-        <ProductCard
-          productImage={require("../../assets/productimage.png")}
-          productTitle={"Kulaküstü Kulaklık"}
-          productPrice={"350 TL"}
-          productQuantity={"1245"}
-          count={count}
-          setCount={setCount}
-        />
-        <ProductCard
-          productImage={require("../../assets/productimage.png")}
-          productTitle={"Kulaküstü Kulaklık"}
-          productPrice={"350 TL"}
-          productQuantity={"1245"}
-          count={count}
-          setCount={setCount}
-        />
-        <ProductCard
-          productImage={require("../../assets/productimage.png")}
-          productTitle={"Kulaküstü Kulaklık"}
-          productPrice={"350 TL"}
-          productQuantity={"1245"}
-          count={count}
-          setCount={setCount}
-        />
+        {productData.map((item, key) => {
+          return (
+            <ProductCard
+              key={key}
+              productImage={item.product.image}
+              productTitle={item.product.title}
+              productPrice={item.product.price}
+              productQuantity={item.product.quantity}
+            />
+          );
+        })}
       </div>
     </div>
   );

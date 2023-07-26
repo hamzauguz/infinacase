@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LuShoppingCart } from "react-icons/lu";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
@@ -9,10 +9,8 @@ const ProductCard = ({
   productTitle,
   productPrice,
   productQuantity,
-  count,
-  setCount,
 }) => {
-  // const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
   const [basketIcon, setBasketIcon] = useState(false);
 
@@ -37,7 +35,7 @@ const ProductCard = ({
       <div className="product-bottom-container">
         <div className="product-bottom-left-container">
           <span className="bottom-left-product-title">{productTitle}</span>
-          <span className="bottom-left-product-price">{productPrice}</span>
+          <span className="bottom-left-product-price">{productPrice} TL</span>
           <span className="bottom-left-product-count">
             {productQuantity} Adetle Sınırlı
           </span>
