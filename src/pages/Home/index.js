@@ -34,7 +34,16 @@ const Home = () => {
           <h1>hoşgeldin {user.fullName}</h1>
         </>
       )} */}
-      <div className="search-filter-container">search filter</div>
+      <div className="search-filter-container">
+        <input placeholder="Ne alsan?" className="search-input" />
+        <div className="filter-button-container">
+          <span className="filter-button">Teknoloji</span>
+          <span className="filter-button">Giyim</span>
+          <span className="filter-button">Kozmetik</span>
+          <span className="filter-button">Mobilya</span>
+          <span className="filter-button">Aksesuar</span>
+        </div>
+      </div>
     </div>
   );
 };
