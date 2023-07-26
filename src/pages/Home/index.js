@@ -6,12 +6,16 @@ import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
 import { RiSearch2Line } from "react-icons/ri";
 import ProductCard from "../../components/product-card";
+import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const productData = useSelector((state) => state.product.productsArray);
+  const products = useSelector((state) => state.product.productsArray);
+  const addedCard = useSelector((state) => state.card.card);
+  const totalQuantity = useSelector(selectTotalQuantity);
+  const totalPrice = useSelector(selectTotalPrice);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -52,7 +56,7 @@ const Home = () => {
         </div>
       </div> */}
       <div className="products-container">
-        {productData.map((item, key) => {
+        {products.map((item, key) => {
           return (
             <ProductCard
               key={key}
