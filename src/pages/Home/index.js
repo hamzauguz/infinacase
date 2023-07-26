@@ -26,14 +26,15 @@ const Home = () => {
   console.log("products Data::", data);
   return (
     <div>
-      home <br />
+      {/* home <br />
       {user && (
         <>
           <span>giriş yaptın</span>
           <button onClick={handleLogout}>çıkış yap</button>
           <h1>hoşgeldin {user.fullName}</h1>
         </>
-      )}
+      )} */}
+      <div className="search-filter-container">search filter</div>
     </div>
   );
 };
