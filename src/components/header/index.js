@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
+import { selectTotalQuantity } from "../../store/selectors";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const [avatarButton, setAvatarButton] = useState(false);
+  const totalQuantity = useSelector(selectTotalQuantity);
 
   const handleMouseEnter = () => {
     setAvatarButton(true);
@@ -57,8 +59,8 @@ const Header = () => {
             <HeaderButton
               src={require("../../assets/images/basket.png")}
               title={"Sepetim"}
-              basketPlace
-              basketCount={2}
+              basketPlace={!totalQuantity == 0}
+              basketCount={totalQuantity}
             />
           </>
         ) : (
