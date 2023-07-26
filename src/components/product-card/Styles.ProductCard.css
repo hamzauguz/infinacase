@@ -15,9 +15,7 @@
 
 @media screen and (max-width: 1200px) {
   .product-card-container {
-    flex-basis: calc(
-      33.33% - 20px
-    ); /* Daha küçük ekranlarda her kart %33.33 genişliğinde olacak */
+    flex-basis: calc(33.33% - 20px);
   }
 }
 
@@ -25,12 +23,15 @@
   .product-card-container {
     flex-basis: 50%;
   }
+  .product-image-style {
+    width: 350px !important;
+  }
 }
 
 .product-image-style {
   height: 300px;
-
   background-repeat: no-repeat;
+  display: flex;
 }
 
 .product-bottom-container {
