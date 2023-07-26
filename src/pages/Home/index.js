@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Styles.Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../helpers/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
 import { RiSearch2Line } from "react-icons/ri";
+import ProductCard from "../../components/product-card";
 
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const data = useSelector((state) => state.product.productsArray);
+  const productData = useSelector((state) => state.product.productsArray);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -24,7 +25,9 @@ const Home = () => {
   };
 
   console.log("user::", user);
-  console.log("products Data::", data);
+  console.log("products Data::", productData);
+  const [count, setCount] = useState(0);
+
   return (
     <div>
       {/* home <br />
@@ -35,7 +38,7 @@ const Home = () => {
           <h1>hoşgeldin {user.fullName}</h1>
         </>
       )} */}
-      <div className="search-filter-container">
+      {/* <div className="search-filter-container">
         <div className="input-with-icon-container">
           <RiSearch2Line size={32} className="input-search-icon" />
           <input placeholder="Ne alsan?" className="search-input" />
@@ -47,8 +50,20 @@ const Home = () => {
           <span className="filter-button">Mobilya</span>
           <span className="filter-button">Aksesuar</span>
         </div>
+      </div> */}
+      <div className="products-container">
+        {productData.map((item, key) => {
+          return (
+            <ProductCard
+              key={key}
+              productImage={item.product.image}
+              productTitle={item.product.title}
+              productPrice={item.product.price}
+              productQuantity={item.product.quantity}
+            />
+          );
+        })}
       </div>
-      <div className="products-container">a</div>
     </div>
   );
 };
