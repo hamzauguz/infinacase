@@ -1,0 +1,13 @@
+.mybasket-container {
+}
+
+.page-header-container {
+  height: 117px;
+  background-color: #edf9f8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 50px;
+  align-items: center;
+  padding: 0 170px;
+}

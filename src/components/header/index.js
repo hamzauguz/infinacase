@@ -38,6 +38,7 @@ const Header = () => {
   return (
     <div className="Navbar">
       <img
+        onClick={() => navigate("/")}
         className="nav-logo"
         src={require("../../assets/images/headericon.png")}
       />
@@ -63,6 +64,7 @@ const Header = () => {
             <HeaderButton
               src={require("../../assets/images/basket.png")}
               title={"Sepetim"}
+              onClick={() => navigate("/mybasket")}
               basketPlace={!totalQuantity == 0}
               basketCount={totalQuantity}
             />
