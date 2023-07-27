@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./Styles.Home.css";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../helpers/firebaseAuth";
+
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
-import { RiSearch2Line } from "react-icons/ri";
+
 import ProductCard from "../../components/product-card";
 import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
 import { addToCart, decrement, increment } from "../../store/cartSlice";
 import { toast } from "react-toastify";
+import { ThreeCircles } from "react-loader-spinner";
+
+import "./Styles.Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,11 +21,21 @@ const Home = () => {
   const totalQuantity = useSelector(selectTotalQuantity);
   const totalPrice = useSelector(selectTotalPrice);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+  const [loading, setLoading] = useState(true);
 
-  console.log("user::", user);
+  useEffect(() => {
+    const fetchProductsAndSetLoading = async () => {
+      try {
+        await dispatch(fetchProducts());
+        setLoading(false);
+      } catch (error) {
+        console.error("Ürünler alınırken bir hata oluştu:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchProductsAndSetLoading();
+  }, [dispatch]);
 
   const productAmountState = (amount, item) => {
     if (amount == 0) {
@@ -56,37 +68,48 @@ const Home = () => {
           <span className="filter-button">Aksesuar</span>
         </div>
       </div> */}
-      <div className="products-container">
-        {products.map((item, key) => {
-          const addedItem = addedCard.find(
-            (addedItem) => addedItem.id === item.id
-          );
-          const amount = addedItem ? addedItem.quantity : 0;
-          return (
-            <ProductCard
-              key={key}
-              productImage={item.product.image}
-              productTitle={item.product.title}
-              productPrice={item.product.price}
-              productQuantity={item.product.quantity}
-              amount={amount}
-              disabledProduct={amount < item.product.quantity}
-              onIncrementClick={() => {
-                toast.success("Ürün Eklendi", {
-                  position: "top-center",
-                });
-                productAmountState(amount, item);
-              }}
-              onDecrementClick={() => {
-                toast.success("Ürün Çıkartıldı ", {
-                  position: "top-center",
-                });
-                dispatch(decrement(item.id));
-              }}
-            />
-          );
-        })}
-      </div>
+      {loading ? (
+        <div className="loading-message">
+          <ThreeCircles
+            height="100"
+            width="100"
+            color="#84c7c4"
+            visible={true}
+          />
+        </div>
+      ) : (
+        <div className="products-container">
+          {products.map((item, key) => {
+            const addedItem = addedCard.find(
+              (addedItem) => addedItem.id === item.id
+            );
+            const amount = addedItem ? addedItem.quantity : 0;
+            return (
+              <ProductCard
+                key={key}
+                productImage={item.product.image}
+                productTitle={item.product.title}
+                productPrice={item.product.price}
+                productQuantity={item.product.quantity}
+                amount={amount}
+                disabledProduct={amount < item.product.quantity}
+                onIncrementClick={() => {
+                  toast.success("Ürün Eklendi", {
+                    position: "top-center",
+                  });
+                  productAmountState(amount, item);
+                }}
+                onDecrementClick={() => {
+                  toast.success("Ürün Çıkartıldı ", {
+                    position: "top-center",
+                  });
+                  dispatch(decrement(item.id));
+                }}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

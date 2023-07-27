@@ -51,6 +51,10 @@ const MyBasket = () => {
     }
   };
 
+  const filteredBasketProducts = myBasketProducts.filter(
+    (item) => item.quantity > 0
+  );
+
   return (
     <div className="mybasket-container">
       <div className="page-header-container">
@@ -60,7 +64,7 @@ const MyBasket = () => {
         />
       </div>
       <div className="mybasket-card-main">
-        {myBasketProducts.length === 0 ? (
+        {filteredBasketProducts.length === 0 ? (
           <div className="no-products-message">
             <img
               className="no-product-image"
@@ -68,7 +72,7 @@ const MyBasket = () => {
             />
           </div>
         ) : (
-          myBasketProducts.map((item, key) => {
+          filteredBasketProducts.map((item, key) => {
             const addedItem = myBasketProducts.find(
               (addedItem) => addedItem.id === item.id
             );
@@ -94,7 +98,7 @@ const MyBasket = () => {
             );
           })
         )}
-        {myBasketProducts.length === 0 ? (
+        {filteredBasketProducts.length === 0 ? (
           <span onClick={() => navigate("/")} className="confirm-basket-button">
             Alişverişe Devam Et
           </span>
