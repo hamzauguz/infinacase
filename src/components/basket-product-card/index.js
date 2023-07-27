@@ -12,6 +12,8 @@ const BasketProductCard = ({
   onIncrementClick,
   onDecrementClick,
   disabledProduct,
+  mybasketCardStyle,
+  mybasketCardPriceStyle,
 }) => {
   const [count, setCount] = useState(amount);
   const handleIncrement = () => {
@@ -26,7 +28,7 @@ const BasketProductCard = ({
   };
 
   return (
-    <div className="mybasket-card-container">
+    <div className={`mybasket-card-container ${mybasketCardStyle}`}>
       <div className="mybasket-left-card-container">
         <img className="mybasket-card-image" src={productImage} />
         <div className="mybasket-left-title-card-container">
@@ -58,7 +60,9 @@ const BasketProductCard = ({
           </div>
         </div>
 
-        <span className="mybasket-card-price">{productPrice} TL</span>
+        <span className={`mybasket-card-price ${mybasketCardPriceStyle}`}>
+          {productPrice} TL
+        </span>
       </div>
     </div>
   );

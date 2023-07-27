@@ -14,7 +14,6 @@ import {
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-import "./Styles.MyBasket.css";
 import { useNavigate } from "react-router-dom";
 import {
   getUserBasketData,
@@ -34,6 +33,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { selectTotalPrice } from "../../store/selectors";
+
+import "./Styles.MyBasket.css";
 
 const MyBasket = () => {
   const myBasketProducts = useSelector((state) => state.card.card);
