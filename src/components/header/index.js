@@ -45,9 +45,9 @@ const Header = () => {
   };
 
   useEffect(() => {
-    getUserData(user.email)
+    getUserData(user.email, "userwallet")
       .then((data) => {
-        setUserWalletBalance(data);
+        setUserWalletBalance(data, "userwallet");
       })
       .catch((error) => {
         console.log("Hata oluştu: ", error);

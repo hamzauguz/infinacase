@@ -18,8 +18,8 @@ export const getUserCollection = (firestore, collectionName) => {
   return collection(firestore, collectionName);
 };
 
-export const getUserData = async (userEmail) => {
-  const userWalletRef = getUserCollection(db, "userwallet");
+export const getUserData = async (userEmail, collection) => {
+  const userWalletRef = getUserCollection(db, collection);
 
   try {
     const querySnapshot = await getDocs(userWalletRef);
@@ -40,6 +40,28 @@ export const getUserData = async (userEmail) => {
   }
 };
 
+export const getUserBasketData = async (userEmail, collection) => {
+  const userWalletRef = getUserCollection(db, collection);
+
+  try {
+    const querySnapshot = await getDocs(userWalletRef);
+    const userBasketData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      if (data.userEmail === userEmail) {
+        userBasketData.push(data);
+      }
+    });
+
+    return userBasketData;
+  } catch (error) {
+    console.log("Hata oluştu: ", error);
+    return [];
+  }
+};
+
 export const register = async (email, password, displayName) => {
   try {
     const user = await createUserWithEmailAndPassword(
@@ -49,7 +71,6 @@ export const register = async (email, password, displayName) => {
     ).then(async (user) => {
       toast.success("Kayıt başarıyla oluşturuldu.");
 
-      // const userWalletRef = collection(db, "userwallet");
       const userWalletRef = getUserCollection(db, "userwallet");
       console.log("userWalletRef: ", userWalletRef);
       await addDoc(userWalletRef, {
