@@ -1,0 +1,133 @@
+@media screen and (max-width: 800px) {
+  .mybasket-card-container {
+    height: 500px !important;
+
+    margin: 0 auto !important;
+    flex-direction: column;
+
+    width: 350px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mybasket-left-title-card-container {
+    margin-top: 1em;
+  }
+
+  .mybasket-left-card-container {
+    flex-direction: column !important;
+    margin-left: 0 !important;
+    flex: 0.3;
+
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mybasket-card-image {
+    text-align: center;
+    width: 300px !important;
+    height: auto !important;
+  }
+  .mybasket-right-card-container {
+    margin-right: 0 !important;
+    flex-direction: column-reverse !important;
+    text-align: center;
+    padding: 20px 0px;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 1000px) {
+  .mybasket-left-card-container {
+    flex-direction: column !important;
+  }
+  .mybasket-right-card-container {
+    flex-direction: column-reverse !important;
+  }
+  .mybasket-card-container {
+    height: 300px !important;
+  }
+}
+
+.mybasket-card-container {
+  height: 220px;
+
+  border-radius: 8px;
+  border: 2px solid #349590;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+
+  flex: 0.8;
+}
+
+.mybasket-card-image {
+  width: 165px;
+  height: 159px;
+}
+
+.mybasket-left-card-container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 26px;
+  flex: 0.3;
+
+  justify-content: space-between;
+}
+
+.mybasket-left-title-card-container {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  padding-left: 10px;
+}
+
+.mybasket-card-title {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.mybasket-card-amount {
+  color: #349590;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.mybasket-right-card-container {
+  flex: 0.25;
+
+  margin-right: 100px;
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mybasket-card-price {
+  color: #349590;
+  font-size: 32px;
+  font-weight: 700;
+  padding: 0 5px;
+}
+
+.mybasket-style {
+  width: 153px;
+  height: 61px;
+}
+
+.mybasket-count-button {
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+}
+
+.mybasket-amount-count {
+  color: #349590;
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0 1px;
+}
+
+.mybasket-right-padding {
+  margin-right: 5px;
+}
