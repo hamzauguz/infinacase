@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
 import "./Styles.BasketProductCard.css";
 
-const BasketProductCard = () => {
+const BasketProductCard = ({
+  productImage,
+  productTitle,
+  productPrice,
+  productQuantity,
+  amount,
+}) => {
+  const [count, setCount] = useState(amount);
+
   return (
     <div className="mybasket-card-container">
       <div className="mybasket-left-card-container">
-        <img
-          className="mybasket-card-image"
-          src={require("../../assets/productimage.png")}
-        />
+        <img className="mybasket-card-image" src={productImage} />
         <div className="mybasket-left-title-card-container">
-          <span className="mybasket-card-title">Kulakustu kulaklık</span>
-          <span className="mybasket-card-amount">1245 Adetle Sınırlı</span>
+          <span className="mybasket-card-title">{productTitle}</span>
+          <span className="mybasket-card-amount">
+            {productQuantity} Adetle Sınırlı
+          </span>
         </div>
       </div>
       <div className="mybasket-right-card-container ">
@@ -23,7 +30,7 @@ const BasketProductCard = () => {
           </div>
 
           <div>
-            <span className="mybasket-amount-count">5</span>
+            <span className="mybasket-amount-count">{count}</span>
           </div>
 
           <div className="product-increment-count mybasket-right-padding mybasket-count-button">
@@ -31,7 +38,7 @@ const BasketProductCard = () => {
           </div>
         </div>
 
-        <span className="mybasket-card-price">350 TL</span>
+        <span className="mybasket-card-price">{productPrice} TL</span>
       </div>
     </div>
   );

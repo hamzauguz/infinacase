@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 
@@ -14,8 +14,14 @@ const MyBasket = () => {
         />
       </div>
       <div className="mybasket-card-main">
-        <BasketProductCard />
-        <BasketProductCard />
+        <BasketProductCard
+          productImage={require("../../assets/productimage.png")}
+          productTitle={"Kulaküstü Kulaklık"}
+          productPrice={200}
+          productQuantity={100}
+          //   amount={amount}
+        />
+
         <span className="confirm-basket-button">Sepeti Onayla</span>
       </div>
     </div>
