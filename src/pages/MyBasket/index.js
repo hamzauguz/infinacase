@@ -1,9 +1,38 @@
-import React from "react";
-import "./Styles.MyBasket.css";
+import React, { useCallback, useState } from "react";
 import HeaderButton from "../../components/header-button";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import BasketProductCard from "../../components/basket-product-card";
+
+import "./Styles.MyBasket.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  decrement,
+  increment,
+  removeItem,
+} from "../../store/cartSlice";
 
 const MyBasket = () => {
+  const myBasketProducts = useSelector((state) => state.card.card);
+  const dispatch = useDispatch();
+  console.log("added card :  ", myBasketProducts);
+
+  const productAmountState = (amount, item) => {
+    if (amount == 0) {
+      dispatch(addToCart(item));
+    } else {
+      dispatch(increment(item.id));
+    }
+  };
+
+  const removeProduct = (amount, item) => {
+    if (amount == 0) {
+      dispatch(removeItem(item.id));
+      console.log("silinmesi gerek");
+    } else {
+      dispatch(decrement(item.id));
+    }
+  };
+
   return (
     <div className="mybasket-container">
       <div className="page-header-container">
@@ -13,35 +42,33 @@ const MyBasket = () => {
         />
       </div>
       <div className="mybasket-card-main">
-        <div className="mybasket-card-container">
-          <div className="mybasket-left-card-container">
-            <img
-              className="mybasket-card-image"
-              src={require("../../assets/productimage.png")}
+        {myBasketProducts.map((item, key) => {
+          const addedItem = myBasketProducts.find(
+            (addedItem) => addedItem.id === item.id
+          );
+          const amount = addedItem ? addedItem.quantity : 0;
+          //   removeProduct(amount, item);
+          console.log("amount: ", amount);
+          return (
+            <BasketProductCard
+              key={key}
+              productImage={item.product.image}
+              productTitle={item.product.title}
+              productPrice={item.product.price}
+              productQuantity={item.product.quantity}
+              amount={amount}
+              disabledProduct={amount < item.product.quantity}
+              disabledDecrement={!amount == 0}
+              onIncrementClick={() => {
+                productAmountState(amount, item);
+              }}
+              onDecrementClick={() => {
+                removeProduct(amount, item);
+              }}
             />
-            <div className="mybasket-left-title-card-container">
-              <span className="mybasket-card-title">Kulakustu kulaklık</span>
-              <span className="mybasket-card-amount">1245 Adetle Sınırlı</span>
-            </div>
-          </div>
-          <div className="mybasket-right-card-container ">
-            <div className="addtocard-container open-increment-basket mybasket-style">
-              <div className="product-increment-count mybasket-count-button">
-                <AiOutlineMinus size={35} color="#C3ECEA" />
-              </div>
+          );
+        })}
 
-              <div>
-                <span className="mybasket-amount-count">5</span>
-              </div>
-
-              <div className="product-increment-count mybasket-right-padding mybasket-count-button">
-                <AiOutlinePlus color="#C3ECEA" size={35} />
-              </div>
-            </div>
-
-            <span className="mybasket-card-price">350 TL</span>
-          </div>
-        </div>
         <span className="confirm-basket-button">Sepeti Onayla</span>
       </div>
     </div>
