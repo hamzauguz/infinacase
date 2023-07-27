@@ -64,6 +64,8 @@
 
   flex: 0.6;
   margin-left: 10px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .input-with-icon-container {
@@ -99,3 +101,16 @@
   justify-content: center;
   padding: 20px 0;
 }
+
+.filter-button:hover {
+  background-color: #abe4e2;
+}
+
+/* Seçili kategori için stil ayarlamaları */
+.filter-button.active {
+  border: 5px solid #349590;
+}
+/* 
+.filter-button.active:hover {
+  background-color: #67a09f;
+} */

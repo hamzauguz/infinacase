@@ -46,6 +46,31 @@ const Home = () => {
     }
   };
 
+  const [selectedCategory, setSelectedCategory] = useState(null); // State for the selected category
+  const handleCategoryClick = (categoryName) => {
+    setSelectedCategory(categoryName);
+  };
+
+  console.log("category name: ", selectedCategory);
+
+  const filterItem = [
+    {
+      categoryName: "Teknoloji",
+    },
+    {
+      categoryName: "Giyim",
+    },
+    {
+      categoryName: "Kozmetik",
+    },
+    {
+      categoryName: "Mobilya",
+    },
+    {
+      categoryName: "Aksesuar",
+    },
+  ];
+
   return (
     <div>
       <div className="search-filter-container">
@@ -54,11 +79,19 @@ const Home = () => {
           <input placeholder="Ne alsan?" className="search-input" />
         </div>
         <div className="filter-button-container">
-          <span className="filter-button">Teknoloji</span>
-          <span className="filter-button">Giyim</span>
-          <span className="filter-button">Kozmetik</span>
-          <span className="filter-button">Mobilya</span>
-          <span className="filter-button">Aksesuar</span>
+          {filterItem.map((item, key) => {
+            return (
+              <span
+                key={key}
+                className={`filter-button ${
+                  selectedCategory === item.categoryName ? "active" : ""
+                }`}
+                onClick={() => handleCategoryClick(item.categoryName)}
+              >
+                {item.categoryName}
+              </span>
+            );
+          })}
         </div>
       </div>
       {loading ? (
