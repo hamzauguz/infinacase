@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../../store/product";
-
 import ProductCard from "../../components/product-card";
 import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
 import { addToCart, decrement, increment } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 import { ThreeCircles } from "react-loader-spinner";
 import { RiSearch2Line } from "react-icons/ri";
+import debounce from "lodash.debounce";
+import { filterItem } from "../../helpers/filterItem";
 
 import "./Styles.Home.css";
 
 const Home = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const products = useSelector((state) => state.product.productsArray);
@@ -23,6 +21,10 @@ const Home = () => {
   const totalPrice = useSelector(selectTotalPrice);
 
   const [loading, setLoading] = useState(true);
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
     const fetchProductsAndSetLoading = async () => {
@@ -38,6 +40,10 @@ const Home = () => {
     fetchProductsAndSetLoading();
   }, [dispatch]);
 
+  useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
+
   const productAmountState = (amount, item) => {
     if (amount == 0) {
       dispatch(addToCart(item));
@@ -46,37 +52,47 @@ const Home = () => {
     }
   };
 
-  const [selectedCategory, setSelectedCategory] = useState(null); // State for the selected category
   const handleCategoryClick = (categoryName) => {
-    setSelectedCategory(categoryName);
+    if (selectedCategory === categoryName) {
+      setSelectedCategory(null);
+      setFilteredProducts(products);
+    } else {
+      setSelectedCategory(categoryName);
+
+      const filtered = products.filter(
+        (item) => item.product.category === categoryName
+      );
+      setFilteredProducts(filtered);
+    }
   };
 
-  console.log("category name: ", selectedCategory);
+  const debouncedSearch = debounce((value) => {
+    const lowerCaseValue = value.toLowerCase();
+    const filtered = products.filter((item) => {
+      const categoryCheck =
+        !selectedCategory || item.product.category === selectedCategory;
+      const searchCheck =
+        !value || item.product.title.toLowerCase().includes(lowerCaseValue);
+      return categoryCheck && searchCheck;
+    });
+    setFilteredProducts(filtered);
+  }, 500);
 
-  const filterItem = [
-    {
-      categoryName: "Teknoloji",
-    },
-    {
-      categoryName: "Giyim",
-    },
-    {
-      categoryName: "Kozmetik",
-    },
-    {
-      categoryName: "Mobilya",
-    },
-    {
-      categoryName: "Aksesuar",
-    },
-  ];
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+    debouncedSearch(event.target.value);
+  };
 
   return (
     <div>
       <div className="search-filter-container">
         <div className="input-with-icon-container">
           <RiSearch2Line size={32} className="input-search-icon" />
-          <input placeholder="Ne alsan?" className="search-input" />
+          <input
+            onChange={handleSearch}
+            placeholder="Ne alsan?"
+            className="search-input"
+          />
         </div>
         <div className="filter-button-container">
           {filterItem.map((item, key) => {
@@ -105,7 +121,7 @@ const Home = () => {
         </div>
       ) : (
         <div className="products-container">
-          {products.map((item, key) => {
+          {filteredProducts.map((item, key) => {
             const addedItem = addedCard.find(
               (addedItem) => addedItem.id === item.id
             );
