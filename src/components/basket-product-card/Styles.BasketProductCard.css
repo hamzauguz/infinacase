@@ -2,7 +2,7 @@
   .mybasket-card-container {
     height: 500px !important;
 
-    margin: 0 auto !important;
+    margin: 32px auto !important;
     flex-direction: column;
 
     width: 350px;
@@ -58,6 +58,7 @@
   justify-content: space-between;
 
   flex: 0.8;
+  margin-top: 1.5em;
 }
 
 .mybasket-card-image {

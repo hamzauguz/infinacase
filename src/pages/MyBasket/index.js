@@ -15,6 +15,7 @@ const MyBasket = () => {
       </div>
       <div className="mybasket-card-main">
         <BasketProductCard />
+        <BasketProductCard />
         <span className="confirm-basket-button">Sepeti Onayla</span>
       </div>
     </div>
