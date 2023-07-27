@@ -72,13 +72,13 @@ const Home = () => {
               amount={amount}
               disabledProduct={amount < item.product.quantity}
               onIncrementClick={() => {
-                toast.success("Urun  Eklendi", {
+                toast.success("Ürün Eklendi", {
                   position: "top-center",
                 });
                 productAmountState(amount, item);
               }}
               onDecrementClick={() => {
-                toast.success("Urun Çıkartıldı ", {
+                toast.success("Ürün Çıkartıldı ", {
                   position: "top-center",
                 });
                 dispatch(decrement(item.id));

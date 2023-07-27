@@ -27,7 +27,6 @@ const MyBasket = () => {
   const removeProduct = (amount, item) => {
     if (amount == 0) {
       dispatch(removeItem(item.id));
-      console.log("silinmesi gerek");
     } else {
       dispatch(decrement(item.id));
     }
@@ -47,8 +46,7 @@ const MyBasket = () => {
             (addedItem) => addedItem.id === item.id
           );
           const amount = addedItem ? addedItem.quantity : 0;
-          //   removeProduct(amount, item);
-          console.log("amount: ", amount);
+
           return (
             <BasketProductCard
               key={key}
@@ -63,7 +61,7 @@ const MyBasket = () => {
                 productAmountState(amount, item);
               }}
               onDecrementClick={() => {
-                removeProduct(amount, item);
+                removeProduct(amount - 1, item);
               }}
             />
           );
