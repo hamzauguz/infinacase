@@ -8,6 +8,7 @@ import { RiSearch2Line } from "react-icons/ri";
 import ProductCard from "../../components/product-card";
 import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
 import { addToCart, decrement, increment } from "../../store/cartSlice";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -23,6 +24,14 @@ const Home = () => {
   }, [dispatch]);
 
   console.log("user::", user);
+
+  const productAmountState = (amount, item) => {
+    if (amount == 0) {
+      dispatch(addToCart(item));
+    } else {
+      dispatch(increment(item.id));
+    }
+  };
 
   return (
     <div>
@@ -62,12 +71,16 @@ const Home = () => {
               productQuantity={item.product.quantity}
               amount={amount}
               disabledProduct={amount < item.product.quantity}
-              OnIncrementPress={() => {
-                amount == 0
-                  ? dispatch(addToCart(item))
-                  : dispatch(increment(item.id));
+              onIncrementClick={() => {
+                toast.success("Urun  Eklendi", {
+                  position: "top-center",
+                });
+                productAmountState(amount, item);
               }}
-              OnDecrementPress={() => {
+              onDecrementClick={() => {
+                toast.success("Urun Çıkartıldı ", {
+                  position: "top-center",
+                });
                 dispatch(decrement(item.id));
               }}
             />

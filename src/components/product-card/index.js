@@ -9,8 +9,8 @@ const ProductCard = ({
   productTitle,
   productPrice,
   productQuantity,
-  OnIncrementPress,
-  OnDecrementPress,
+  onIncrementClick,
+  onDecrementClick,
   amount,
   disabledProduct,
 }) => {
@@ -28,11 +28,11 @@ const ProductCard = ({
 
   const handleIncrement = () => {
     setCount(count + 1);
-    OnIncrementPress();
+    onIncrementClick();
   };
   const handleDecrement = () => {
     setCount(count - 1);
-    OnDecrementPress();
+    onDecrementClick();
   };
 
   return (
