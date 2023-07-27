@@ -14,11 +14,13 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 import "./Styles.MyBasket.css";
+import { useNavigate } from "react-router-dom";
 
 const MyBasket = () => {
   const myBasketProducts = useSelector((state) => state.card.card);
   const dispatch = useDispatch();
-  console.log("added card :  ", myBasketProducts);
+
+  const navigate = useNavigate();
 
   const productAmountState = (amount, item) => {
     if (amount == 0) {
@@ -42,8 +44,6 @@ const MyBasket = () => {
         if (result.isConfirmed) {
           dispatch(removeItem(item.id));
           toast.success(`${item.product.title} ürünü başarıyla silindi`);
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          return;
         }
       });
     } else if (amount > 1) {
@@ -60,33 +60,47 @@ const MyBasket = () => {
         />
       </div>
       <div className="mybasket-card-main">
-        {myBasketProducts.map((item, key) => {
-          const addedItem = myBasketProducts.find(
-            (addedItem) => addedItem.id === item.id
-          );
-          const amount = addedItem ? addedItem.quantity : 0;
-
-          return (
-            <BasketProductCard
-              key={key}
-              productImage={item.product.image}
-              productTitle={item.product.title}
-              productPrice={item.product.price}
-              productQuantity={item.product.quantity}
-              amount={amount}
-              disabledProduct={amount < item.product.quantity}
-              // disabledDecrement={!amount == 0}
-              onIncrementClick={() => {
-                productAmountState(amount, item);
-              }}
-              onDecrementClick={() => {
-                removeProduct(amount, item);
-              }}
+        {myBasketProducts.length === 0 ? (
+          <div className="no-products-message">
+            <img
+              className="no-product-image"
+              src={require("../../assets/images/emptybasket.png")}
             />
-          );
-        })}
+          </div>
+        ) : (
+          myBasketProducts.map((item, key) => {
+            const addedItem = myBasketProducts.find(
+              (addedItem) => addedItem.id === item.id
+            );
+            const amount = addedItem ? addedItem.quantity : 0;
 
-        <span className="confirm-basket-button">Sepeti Onayla</span>
+            return (
+              <BasketProductCard
+                key={key}
+                productImage={item.product.image}
+                productTitle={item.product.title}
+                productPrice={item.product.price}
+                productQuantity={item.product.quantity}
+                amount={amount}
+                disabledProduct={amount < item.product.quantity}
+                // disabledDecrement={!amount == 0}
+                onIncrementClick={() => {
+                  productAmountState(amount, item);
+                }}
+                onDecrementClick={() => {
+                  removeProduct(amount, item);
+                }}
+              />
+            );
+          })
+        )}
+        {myBasketProducts.length === 0 ? (
+          <span onClick={() => navigate("/")} className="confirm-basket-button">
+            Alişverişe Devam Et
+          </span>
+        ) : (
+          <span className="confirm-basket-button">Sepeti Onayla</span>
+        )}
       </div>
     </div>
   );
