@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import "./Styles.Register.css";
 import LabelWithInput from "../../components/label-with-input";
 import { register } from "../../helpers/firebaseAuth";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+
+import "./Styles.Register.css";
 
 const Register = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+
   const [formData, setFormData] = useState({
     displayName: "",
     email: "",
@@ -22,17 +27,18 @@ const Register = () => {
     });
   };
 
-  console.log("email: ", formData.email, formData.password);
+  useEffect(() => {
+    if (user) return navigate("/");
+  }, [user]);
 
   const handleRegister = async () => {
     await register(
       formData.email,
       formData.password,
       formData.displayName
-    ).then(() => {
-      navigate("/");
+    ).catch(() => {
+      toast.error("Hatalı");
     });
-    // dispatch(loginHandle(user));
   };
 
   return (

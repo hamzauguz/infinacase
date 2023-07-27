@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./Styles.Header.css";
 import HeaderButton from "../header-button";
 import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
+
+import "./Styles.Header.css";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,6 +30,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
+    setIsOpen(false);
     await logout();
     navigate("/login", {
       replace: true,
@@ -54,6 +56,7 @@ const Header = () => {
               onMouseLeave={handleMouseLeave}
             />
             <HeaderButton
+              onClick={() => setIsOpen(false)}
               src={require("../../assets/images/wallet.png")}
               title={
                 <>
@@ -64,13 +67,20 @@ const Header = () => {
             <HeaderButton
               src={require("../../assets/images/basket.png")}
               title={"Sepetim"}
-              onClick={() => navigate("/mybasket")}
+              onClick={() => {
+                setIsOpen(false);
+                navigate("/mybasket");
+              }}
               basketPlace={!totalQuantity == 0}
               basketCount={totalQuantity}
             />
           </>
         ) : (
           <HeaderButton
+            onClick={() => {
+              setIsOpen(false);
+              navigate("/login");
+            }}
             src={require("../../assets/images/avatar.png")}
             title={"Giriş Yap"}
           />

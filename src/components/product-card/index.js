@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { LuShoppingCart } from "react-icons/lu";
 import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
 
@@ -9,8 +9,8 @@ const ProductCard = ({
   productTitle,
   productPrice,
   productQuantity,
-  OnIncrementPress,
-  OnDecrementPress,
+  onIncrementClick,
+  onDecrementClick,
   amount,
   disabledProduct,
 }) => {
@@ -28,11 +28,11 @@ const ProductCard = ({
 
   const handleIncrement = () => {
     setCount(count + 1);
-    OnIncrementPress();
+    onIncrementClick();
   };
   const handleDecrement = () => {
     setCount(count - 1);
-    OnDecrementPress();
+    onDecrementClick();
   };
 
   return (

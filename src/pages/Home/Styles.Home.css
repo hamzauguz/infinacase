@@ -65,3 +65,11 @@
     padding: 0 0px !important;
   }
 }
+
+.loading-message {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0;
+}
