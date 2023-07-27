@@ -5,7 +5,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import { authenticaton } from "../firebase/config";
+
 import store from "../store";
 import { login as loginHandle, logout as logoutHandle } from "../store/auth";
 import { toast } from "react-toastify";

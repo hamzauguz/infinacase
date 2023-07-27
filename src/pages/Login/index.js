@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import "./Styles.Login.css";
 import LabelWithInput from "../../components/label-with-input";
 import { login } from "../../helpers/firebaseAuth";
 import { toast } from "react-toastify";
+
+import "./Styles.Login.css";
 
 const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });

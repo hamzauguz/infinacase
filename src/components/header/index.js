@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import "./Styles.Header.css";
 import HeaderButton from "../header-button";
 import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
+
+import "./Styles.Header.css";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
