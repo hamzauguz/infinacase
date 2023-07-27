@@ -20,7 +20,9 @@ const BasketProductCard = ({
     onIncrementClick();
   };
   const handleDecrement = () => {
-    setCount(count - 1);
+    if (count > 1) {
+      setCount(count - 1);
+    }
     onDecrementClick();
   };
 
@@ -38,7 +40,7 @@ const BasketProductCard = ({
       <div className="mybasket-right-card-container ">
         <div className="addtocard-container open-increment-basket mybasket-style">
           <div
-            style={{ pointerEvents: disabledDecrement ? "auto" : "none" }}
+            // style={{ pointerEvents: disabledDecrement ? "auto" : "none" }}
             onClick={() => handleDecrement()}
             className="product-increment-count mybasket-count-button"
           >

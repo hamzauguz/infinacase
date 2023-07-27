@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 
-import "./Styles.MyBasket.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -10,6 +9,11 @@ import {
   increment,
   removeItem,
 } from "../../store/cartSlice";
+
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+
+import "./Styles.MyBasket.css";
 
 const MyBasket = () => {
   const myBasketProducts = useSelector((state) => state.card.card);
@@ -25,9 +29,24 @@ const MyBasket = () => {
   };
 
   const removeProduct = (amount, item) => {
-    if (amount == 0) {
-      dispatch(removeItem(item.id));
-    } else {
+    if (amount == 1) {
+      Swal.fire({
+        title: "Sil",
+        text: `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        iconColor: "#84c7c4",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          dispatch(removeItem(item.id));
+          toast.success(`${item.product.title} ürünü başarıyla silindi`);
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          return;
+        }
+      });
+    } else if (amount > 1) {
       dispatch(decrement(item.id));
     }
   };
@@ -56,12 +75,12 @@ const MyBasket = () => {
               productQuantity={item.product.quantity}
               amount={amount}
               disabledProduct={amount < item.product.quantity}
-              disabledDecrement={!amount == 0}
+              // disabledDecrement={!amount == 0}
               onIncrementClick={() => {
                 productAmountState(amount, item);
               }}
               onDecrementClick={() => {
-                removeProduct(amount - 1, item);
+                removeProduct(amount, item);
               }}
             />
           );
