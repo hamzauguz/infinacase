@@ -122,7 +122,7 @@ const Home = () => {
       ) : (
         <div className="products-container">
           {filteredProducts.length === 0 ? (
-            <h1 className="no-products-message">Ürün bulunamadı.</h1>
+            <h1>Ürün bulunamadı.</h1>
           ) : (
             <>
               {filteredProducts.map((item, key) => {

@@ -6,7 +6,7 @@
   padding: 0 167px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
-  z-index: 1; /* Veya daha yüksek bir değer */
+  z-index: 9999; /* Veya daha yüksek bir değer */
 }
 
 .Navbar > .nav-logo {
@@ -133,4 +133,11 @@
   .nav-toggle.open > .bar::after {
     transform: rotate(-45deg) translate(26px, 26px);
   }
+}
+
+.header-wallet-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
