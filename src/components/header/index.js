@@ -3,11 +3,16 @@ import HeaderButton from "../header-button";
 import { useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
-import { logout } from "../../helpers/firebaseAuth";
+import {
+  getUserCollection,
+  getUserData,
+  logout,
+} from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
 
 import "./Styles.Header.css";
 import PriceCard from "../price-card";
+import { db } from "../../firebase/config";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +22,7 @@ const Header = () => {
 
   const [avatarButton, setAvatarButton] = useState(false);
   const totalQuantity = useSelector(selectTotalQuantity);
+  const [userWalletBalance, setUserWalletBalance] = useState(30000);
 
   useEffect(() => {
     setAvatarButton(false);
@@ -37,6 +43,18 @@ const Header = () => {
       replace: true,
     });
   };
+
+  useEffect(() => {
+    getUserData(user.email)
+      .then((data) => {
+        setUserWalletBalance(data);
+      })
+      .catch((error) => {
+        console.log("Hata oluştu: ", error);
+      });
+  }, []);
+
+  console.log("userWalletData: ", userWalletBalance);
 
   return (
     <div className="Navbar">
@@ -65,7 +83,8 @@ const Header = () => {
               title={
                 <>
                   <div className="header-wallet-container">
-                    <span>Cüzdanım</span> <PriceCard />
+                    <span>Cüzdanım</span>
+                    <PriceCard balance={userWalletBalance} />
                   </div>
                 </>
               }

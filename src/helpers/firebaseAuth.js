@@ -9,8 +9,36 @@ import {
 import store from "../store";
 import { login as loginHandle, logout as logoutHandle } from "../store/auth";
 import { toast } from "react-toastify";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const auth = getAuth();
+
+export const getUserCollection = (firestore, collectionName) => {
+  return collection(firestore, collectionName);
+};
+
+export const getUserData = async (userEmail) => {
+  const userWalletRef = getUserCollection(db, "userwallet");
+
+  try {
+    const querySnapshot = await getDocs(userWalletRef);
+    const userWalletData = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      if (data.userEmail === userEmail) {
+        userWalletData.push(data.balance);
+      }
+    });
+
+    return userWalletData;
+  } catch (error) {
+    console.log("Hata oluştu: ", error);
+    return [];
+  }
+};
 
 export const register = async (email, password, displayName) => {
   try {
@@ -20,6 +48,15 @@ export const register = async (email, password, displayName) => {
       password
     ).then(async (user) => {
       toast.success("Kayıt başarıyla oluşturuldu.");
+
+      // const userWalletRef = collection(db, "userwallet");
+      const userWalletRef = getUserCollection(db, "userwallet");
+      console.log("userWalletRef: ", userWalletRef);
+      await addDoc(userWalletRef, {
+        userEmail: user.user.email,
+        balance: 30000,
+      });
+
       await updateProfile(auth.currentUser, { displayName });
       store.dispatch(
         loginHandle({
