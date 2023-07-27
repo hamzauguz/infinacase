@@ -22,16 +22,7 @@ const Home = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login", {
-      replace: true,
-    });
-  };
-
   console.log("user::", user);
-
-  const [count, setCount] = useState(0);
 
   return (
     <div>

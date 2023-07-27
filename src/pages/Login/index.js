@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Styles.Login.css";
 import LabelWithInput from "../../components/label-with-input";
 import { login } from "../../helpers/firebaseAuth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 700px)" });
@@ -24,6 +25,7 @@ const Login = () => {
   const handleLogin = async () => {
     const user = await login(formData.email, formData.password);
     if (user) {
+      toast.success("Giriş başarılı.");
       navigate("/", {
         replace: true,
       });
