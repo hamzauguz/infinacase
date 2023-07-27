@@ -10,6 +10,17 @@
     text-align: center;
   }
 
+  .confirm-basket-button {
+    width: 350px !important;
+    float: none !important;
+    margin: 30px auto !important;
+  }
+
+  .mybasket-card-main {
+    margin-top: 1em;
+    padding: 0 0 !important;
+  }
+
   .mybasket-left-title-card-container {
     margin-top: 1em;
   }
