@@ -42,6 +42,7 @@ const MyBasket = () => {
             <span className="mybasket-card-price">350 TL</span>
           </div>
         </div>
+        <span className="confirm-basket-button">Sepeti Onayla</span>
       </div>
     </div>
   );
