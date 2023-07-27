@@ -26,7 +26,7 @@
   .mybasket-card-image {
     text-align: center;
     width: 300px !important;
-    height: auto !important;
+    height: 300px !important;
   }
   .mybasket-right-card-container {
     margin-right: 0 !important;
@@ -120,6 +120,7 @@
   height: 50px;
   width: 50px;
   border-radius: 25px;
+  user-select: none;
 }
 
 .mybasket-amount-count {

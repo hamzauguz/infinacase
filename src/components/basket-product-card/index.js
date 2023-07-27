@@ -9,8 +9,20 @@ const BasketProductCard = ({
   productPrice,
   productQuantity,
   amount,
+  onIncrementClick,
+  onDecrementClick,
+  disabledProduct,
+  disabledDecrement,
 }) => {
   const [count, setCount] = useState(amount);
+  const handleIncrement = () => {
+    setCount(count + 1);
+    onIncrementClick();
+  };
+  const handleDecrement = () => {
+    setCount(count - 1);
+    onDecrementClick();
+  };
 
   return (
     <div className="mybasket-card-container">
@@ -25,7 +37,11 @@ const BasketProductCard = ({
       </div>
       <div className="mybasket-right-card-container ">
         <div className="addtocard-container open-increment-basket mybasket-style">
-          <div className="product-increment-count mybasket-count-button">
+          <div
+            style={{ pointerEvents: disabledDecrement ? "auto" : "none" }}
+            onClick={() => handleDecrement()}
+            className="product-increment-count mybasket-count-button"
+          >
             <AiOutlineMinus size={35} color="#C3ECEA" />
           </div>
 
@@ -33,7 +49,11 @@ const BasketProductCard = ({
             <span className="mybasket-amount-count">{count}</span>
           </div>
 
-          <div className="product-increment-count mybasket-right-padding mybasket-count-button">
+          <div
+            style={{ pointerEvents: disabledProduct ? "auto" : "none" }}
+            onClick={() => handleIncrement()}
+            className="product-increment-count mybasket-right-padding mybasket-count-button"
+          >
             <AiOutlinePlus color="#C3ECEA" size={35} />
           </div>
         </div>
