@@ -57,7 +57,10 @@ const Header = () => {
               onMouseLeave={handleMouseLeave}
             />
             <HeaderButton
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                navigate("/mywallet");
+                setIsOpen(false);
+              }}
               src={require("../../assets/images/wallet.png")}
               title={
                 <>
