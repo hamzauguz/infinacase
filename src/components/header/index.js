@@ -7,6 +7,7 @@ import { logout } from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
 
 import "./Styles.Header.css";
+import PriceCard from "../price-card";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +61,9 @@ const Header = () => {
               src={require("../../assets/images/wallet.png")}
               title={
                 <>
-                  <span>Cüzdanım:</span> <span>150tl</span>
+                  <div className="header-wallet-container">
+                    <span>Cüzdanım</span> <PriceCard />
+                  </div>
                 </>
               }
             />
