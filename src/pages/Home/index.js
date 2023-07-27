@@ -121,35 +121,41 @@ const Home = () => {
         </div>
       ) : (
         <div className="products-container">
-          {filteredProducts.map((item, key) => {
-            const addedItem = addedCard.find(
-              (addedItem) => addedItem.id === item.id
-            );
-            const amount = addedItem ? addedItem.quantity : 0;
-            return (
-              <ProductCard
-                key={key}
-                productImage={item.product.image}
-                productTitle={item.product.title}
-                productPrice={item.product.price}
-                productQuantity={item.product.quantity}
-                amount={amount}
-                disabledProduct={amount < item.product.quantity}
-                onIncrementClick={() => {
-                  toast.success("Ürün Eklendi", {
-                    position: "top-center",
-                  });
-                  productAmountState(amount, item);
-                }}
-                onDecrementClick={() => {
-                  toast.success("Ürün Çıkartıldı ", {
-                    position: "top-center",
-                  });
-                  dispatch(decrement(item.id));
-                }}
-              />
-            );
-          })}
+          {filteredProducts.length === 0 ? (
+            <h1 className="no-products-message">Ürün bulunamadı.</h1>
+          ) : (
+            <>
+              {filteredProducts.map((item, key) => {
+                const addedItem = addedCard.find(
+                  (addedItem) => addedItem.id === item.id
+                );
+                const amount = addedItem ? addedItem.quantity : 0;
+                return (
+                  <ProductCard
+                    key={key}
+                    productImage={item.product.image}
+                    productTitle={item.product.title}
+                    productPrice={item.product.price}
+                    productQuantity={item.product.quantity}
+                    amount={amount}
+                    disabledProduct={amount < item.product.quantity}
+                    onIncrementClick={() => {
+                      toast.success("Ürün Eklendi", {
+                        position: "top-center",
+                      });
+                      productAmountState(amount, item);
+                    }}
+                    onDecrementClick={() => {
+                      toast.success("Ürün Çıkartıldı ", {
+                        position: "top-center",
+                      });
+                      dispatch(decrement(item.id));
+                    }}
+                  />
+                );
+              })}
+            </>
+          )}
         </div>
       )}
     </div>
