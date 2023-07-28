@@ -90,6 +90,8 @@ const MyWallet = () => {
                 const basketQuantity = basketQuantities.find(
                   (q) => q.id === item.id
                 );
+                const amount = basketQuantity ? basketQuantity.quantity : 0;
+
                 return (
                   <BasketProductCard
                     key={key}
@@ -99,7 +101,7 @@ const MyWallet = () => {
                     productTitle={item.product.title}
                     productPrice={item.product.price}
                     productQuantity={item.product.quantity}
-                    amount={basketQuantity.quantity}
+                    amount={amount}
                     disabledProduct={true}
                     disabledDecrement={true}
                     onIncrementClick={() => {
@@ -112,7 +114,7 @@ const MyWallet = () => {
                       );
                     }}
                     onDecrementClick={() => {
-                      if (basketQuantity.quantity > 1) {
+                      if (amount.quantity > 1) {
                         setBasketQuantities((prevQuantities) =>
                           prevQuantities.map((q) =>
                             q.id === item.id
