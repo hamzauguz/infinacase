@@ -35,6 +35,10 @@
   .mywallet-header-button {
     margin-top: 0 !important;
   }
+  .chart-container {
+    width: 350px !important;
+    margin: 0 auto;
+  }
 }
 
 .my-wallet-container {
@@ -113,4 +117,8 @@
 .mywallet-nav-title {
   display: flex;
   align-items: center;
+}
+
+.chart-container {
+  width: 500px;
 }

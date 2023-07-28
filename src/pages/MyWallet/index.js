@@ -6,6 +6,12 @@ import PriceCard from "../../components/price-card";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBalance } from "../../store/balance";
 import { fetchConfirmProduct } from "../../store/confirmProductSlice";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import { filterItem } from "../../helpers/filterItem";
+import { chartData } from "../../helpers/chartData";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MyWallet = () => {
   const dispatch = useDispatch();
@@ -18,7 +24,6 @@ const MyWallet = () => {
   const findBalance = balanceData.find(
     (item) => item.balance.userEmail === user.email
   );
-  // console.log("findBalance: ", findBalance.balance.balance);
 
   const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
 
@@ -37,6 +42,21 @@ const MyWallet = () => {
     0
   );
   const beforeBalance = userWalletBalance + totalProductPrice;
+
+  const categoryNames = filterItem.map((item) => item.categoryName);
+
+  const getproductPricesByCategory = () => {
+    const productPrices = Array(categoryNames.length).fill(0);
+    basketItems.forEach((item) => {
+      const categoryIndex = categoryNames.indexOf(item.product.category);
+      if (categoryIndex !== -1) {
+        productPrices[categoryIndex] += item.quantity * item.product.price;
+      }
+    });
+    return productPrices;
+  };
+
+  const productPrices = getproductPricesByCategory();
 
   useEffect(() => {
     dispatch(fetchBalance());
@@ -119,6 +139,9 @@ const MyWallet = () => {
                 balance={totalProductPrice}
               />
             </div>
+          </div>
+          <div className="chart-container">
+            <Doughnut data={chartData(productPrices)} />
           </div>
         </div>
       </div>
