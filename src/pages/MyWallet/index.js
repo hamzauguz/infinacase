@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Styles.MyWallet.css";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
@@ -63,6 +63,10 @@ const MyWallet = () => {
     dispatch(fetchConfirmProduct());
   }, []);
 
+  const [basketQuantities, setBasketQuantities] = useState(
+    basketItems.map((item) => ({ id: item.id, quantity: item.quantity }))
+  );
+
   return (
     <div>
       <div className="page-header-container mywallet-page-header">
@@ -83,6 +87,9 @@ const MyWallet = () => {
             </span>
             {findConfirmProduct &&
               findConfirmProduct?.basket.basket.map((item, key) => {
+                const basketQuantity = basketQuantities.find(
+                  (q) => q.id === item.id
+                );
                 return (
                   <BasketProductCard
                     key={key}
@@ -92,15 +99,29 @@ const MyWallet = () => {
                     productTitle={item.product.title}
                     productPrice={item.product.price}
                     productQuantity={item.product.quantity}
-                    amount={item.quantity}
-                    // disabledProduct={amount < item.product.quantity}
-                    // // disabledDecrement={!amount == 0}
-                    // onIncrementClick={() => {
-                    //   productAmountState(amount, item);
-                    // }}
-                    // onDecrementClick={() => {
-                    //   removeProduct(amount, item);
-                    // }}
+                    amount={basketQuantity.quantity}
+                    disabledProduct={true}
+                    disabledDecrement={true}
+                    onIncrementClick={() => {
+                      setBasketQuantities((prevQuantities) =>
+                        prevQuantities.map((q) =>
+                          q.id === item.id
+                            ? { ...q, quantity: q.quantity + 1 }
+                            : q
+                        )
+                      );
+                    }}
+                    onDecrementClick={() => {
+                      if (basketQuantity.quantity > 1) {
+                        setBasketQuantities((prevQuantities) =>
+                          prevQuantities.map((q) =>
+                            q.id === item.id
+                              ? { ...q, quantity: q.quantity - 1 }
+                              : q
+                          )
+                        );
+                      }
+                    }}
                   />
                 );
               })}
