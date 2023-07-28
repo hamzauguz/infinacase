@@ -16,7 +16,13 @@ import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
 import { getUserCollection } from "../../helpers/firebaseAuth";
-import { addDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { selectTotalPrice } from "../../store/selectors";
 
@@ -106,6 +112,28 @@ const MyBasket = () => {
         toast.success("Sipariş verildi.");
       });
     } else {
+      const querySnapshot = await getDocs(collection(db, "userbasket"));
+      const userBasketDocs = querySnapshot.docs.filter(
+        (doc) => doc.data().userEmail === user.email
+      );
+
+      if (userBasketDocs.length > 0) {
+        const docRefToDelete = doc(db, "userbasket", userBasketDocs[0].id);
+        await deleteDoc(docRefToDelete);
+      }
+
+      await addDoc(userBasketRef, {
+        userEmail: user.email,
+        basket: filteredBasketProducts,
+      }).then(() => {
+        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+
+        dispatch(clear());
+        navigate("/mywallet");
+        toast.success(
+          "Eski siparişlerinin kaldırılıp yeni siparişleriniz eklendi."
+        );
+      });
     }
   };
 
