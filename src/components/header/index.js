@@ -96,7 +96,7 @@ const Header = () => {
                 setIsOpen(false);
                 navigate("/mybasket");
               }}
-              basketPlace={!totalQuantity === 0}
+              basketPlace={totalQuantity != 0}
               basketCount={totalQuantity}
             />
           </>

@@ -57,7 +57,7 @@ const Home = () => {
       setSelectedCategory(categoryName);
 
       const filtered = products.filter(
-        (item) => item.product.category === categoryName
+        (item) => item.product.category == categoryName
       );
       setFilteredProducts(filtered);
     }
@@ -67,7 +67,7 @@ const Home = () => {
     const lowerCaseValue = value.toLowerCase();
     const filtered = products.filter((item) => {
       const categoryCheck =
-        !selectedCategory || item.product.category === selectedCategory;
+        !selectedCategory || item.product.category == selectedCategory;
       const searchCheck =
         !value || item.product.title.toLowerCase().includes(lowerCaseValue);
       return categoryCheck && searchCheck;
