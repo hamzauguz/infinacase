@@ -86,12 +86,14 @@
 .mybasket-card-title {
   font-size: 24px;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .mybasket-card-amount {
   color: #349590;
   font-size: 12px;
   margin-top: 8px;
+  white-space: nowrap;
 }
 
 .mybasket-right-card-container {
@@ -109,6 +111,8 @@
   font-size: 32px;
   font-weight: 700;
   padding: 0 5px;
+
+  white-space: nowrap;
 }
 
 .mybasket-style {

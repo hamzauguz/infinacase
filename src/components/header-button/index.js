@@ -9,13 +9,14 @@ const HeaderButton = ({
   basketCount,
   onMouseEnter,
   onMouseLeave,
+  headerButtonStyle,
 }) => {
   return (
     <div
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
-      className="header-button"
+      className={`header-button ${headerButtonStyle}`}
     >
       <img className="header-icon" src={src} />
       {basketPlace && <div className="count-basket">{basketCount}</div>}

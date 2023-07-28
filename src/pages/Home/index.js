@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../store/product";
 import ProductCard from "../../components/product-card";
-import { selectTotalPrice, selectTotalQuantity } from "../../store/selectors";
+
 import { addToCart, decrement, increment } from "../../store/cartSlice";
 import { toast } from "react-toastify";
 import { ThreeCircles } from "react-loader-spinner";
@@ -14,11 +14,9 @@ import "./Styles.Home.css";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+
   const products = useSelector((state) => state.product.productsArray);
   const addedCard = useSelector((state) => state.card.card);
-  const totalQuantity = useSelector(selectTotalQuantity);
-  const totalPrice = useSelector(selectTotalPrice);
 
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +30,6 @@ const Home = () => {
         await dispatch(fetchProducts());
         setLoading(false);
       } catch (error) {
-        console.error("Ürünler alınırken bir hata oluştu:", error);
         setLoading(false);
       }
     };
@@ -45,7 +42,7 @@ const Home = () => {
   }, [products]);
 
   const productAmountState = (amount, item) => {
-    if (amount == 0) {
+    if (amount === 0) {
       dispatch(addToCart(item));
     } else {
       dispatch(increment(item.id));

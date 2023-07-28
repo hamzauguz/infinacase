@@ -141,3 +141,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.header-wallet-style {
+  margin-left: 0.5em;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HeaderButton from "../header-button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
@@ -9,14 +9,29 @@ import { selectTotalQuantity } from "../../store/selectors";
 import "./Styles.Header.css";
 import PriceCard from "../price-card";
 
+import { fetchBalance } from "../../store/balance";
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const balanceData = useSelector((state) => state.balance.balanceArray);
 
   const navigate = useNavigate();
 
   const [avatarButton, setAvatarButton] = useState(false);
   const totalQuantity = useSelector(selectTotalQuantity);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [user]);
+
+  const findBalance = balanceData?.find(
+    (item) => item.balance.userEmail === user.email
+  );
+
+  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
 
   useEffect(() => {
     setAvatarButton(false);
@@ -57,12 +72,19 @@ const Header = () => {
               onMouseLeave={handleMouseLeave}
             />
             <HeaderButton
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                navigate("/mywallet");
+                setIsOpen(false);
+              }}
               src={require("../../assets/images/wallet.png")}
               title={
                 <>
                   <div className="header-wallet-container">
-                    <span>Cüzdanım</span> <PriceCard />
+                    <span>Cüzdanım</span>
+                    <PriceCard
+                      priceCardStyle={"header-wallet-style"}
+                      balance={userWalletBalance}
+                    />
                   </div>
                 </>
               }
@@ -74,7 +96,7 @@ const Header = () => {
                 setIsOpen(false);
                 navigate("/mybasket");
               }}
-              basketPlace={!totalQuantity == 0}
+              basketPlace={!totalQuantity === 0}
               basketCount={totalQuantity}
             />
           </>

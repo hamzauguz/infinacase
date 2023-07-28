@@ -1,0 +1,124 @@
+@media screen and (max-width: 800px) {
+  .mywallet-product-price {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+  }
+  .my-wallet-container {
+    padding: 0 0px !important;
+
+    align-items: center;
+  }
+  .basket-balance-container {
+    flex-direction: column !important;
+  }
+  .my-wallet-product-title {
+    padding: 0 20px;
+    font-size: 20px !important;
+    white-space: nowrap;
+  }
+  .mywallet-balance-container {
+    width: 100%;
+  }
+  .mywallet-balance-main {
+    margin-top: 3em;
+    padding: 0 23px !important;
+  }
+  .my-wallet-bottom-container {
+    margin: 0 23px;
+  }
+  .mywallet-nav-title {
+    margin: 0 auto;
+  }
+  .mywallet-page-header {
+    padding: 0 0px !important;
+  }
+  .mywallet-header-button {
+    margin-top: 0 !important;
+  }
+  .chart-container {
+    width: 350px !important;
+    margin: 0 auto;
+  }
+}
+
+.my-wallet-container {
+  margin-top: 1em;
+  padding: 0 170px;
+}
+.basket-balance-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.mywallet-product-card {
+}
+
+.mywallet-product-price {
+  margin-right: -2em;
+  margin-left: 2em;
+}
+
+.my-wallet-product-main {
+  flex: 0.65;
+}
+
+.my-wallet-product-title {
+  color: #349590;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.mywallet-balance-container {
+  border-radius: 8px;
+  border: 2px solid #349590;
+  margin-top: 1.5em;
+  height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mywallet-balance-main {
+  padding: 0 43px;
+  flex: 0.4;
+}
+
+.mywallet-balance-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 40px;
+}
+.mw-balance-item-title {
+  text-align: left;
+  float: left;
+  display: flex;
+  color: #349590;
+}
+
+.expenses-price {
+  display: flex;
+  align-items: center;
+}
+
+.expenses-inside {
+  margin: 48px 37px;
+}
+
+.my-wallet-bottom-container {
+  margin-top: 2em;
+}
+
+.expenses-container {
+}
+
+.mywallet-nav-title {
+  display: flex;
+  align-items: center;
+}
+
+.chart-container {
+  width: 500px;
+}

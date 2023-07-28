@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
+  clear,
   decrement,
   increment,
   removeItem,
@@ -13,17 +14,48 @@ import {
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
-import "./Styles.MyBasket.css";
 import { useNavigate } from "react-router-dom";
+import { getUserCollection } from "../../helpers/firebaseAuth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebase/config";
+import { selectTotalPrice } from "../../store/selectors";
+
+import "./Styles.MyBasket.css";
+import { fetchBalance, updateBalance } from "../../store/balance";
 
 const MyBasket = () => {
   const myBasketProducts = useSelector((state) => state.card.card);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
+  const { user } = useSelector((state) => state.auth);
+  const balanceData = useSelector((state) => state.balance.balanceArray);
+  const totalPrice = useSelector(selectTotalPrice);
+
+  const findBalance = balanceData.find(
+    (item) => item.balance.userEmail === user.email
+  );
+
+  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
+
+  const filteredBasketProducts = myBasketProducts.filter(
+    (item) => item.quantity > 0
+  );
+
+  const newBalance = userWalletBalance - totalPrice;
+
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [dispatch]);
+
   const productAmountState = (amount, item) => {
-    if (amount == 0) {
+    if (amount === 0) {
       dispatch(addToCart(item));
     } else {
       dispatch(increment(item.id));
@@ -31,7 +63,7 @@ const MyBasket = () => {
   };
 
   const removeProduct = (amount, item) => {
-    if (amount == 1) {
+    if (amount === 1) {
       Swal.fire({
         title: "Sil",
         text: `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,
@@ -50,10 +82,55 @@ const MyBasket = () => {
       dispatch(decrement(item.id));
     }
   };
-
-  const filteredBasketProducts = myBasketProducts.filter(
-    (item) => item.quantity > 0
+  const confirmProducts = useSelector(
+    (state) => state.confirmProduct.productsArray
   );
+
+  const findConfirmProduct = confirmProducts?.find(
+    (item) => item.basket.userEmail === user.email
+  );
+
+  const isBasketNotEmpty = !!findConfirmProduct;
+
+  const addToWallet = async () => {
+    if (totalPrice > userWalletBalance) return toast.error("Yetersiz Bakiye!");
+    const userBasketRef = getUserCollection(db, "userbasket");
+    if (!isBasketNotEmpty) {
+      await addDoc(userBasketRef, {
+        userEmail: user.email,
+        basket: filteredBasketProducts,
+      }).then(() => {
+        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+
+        dispatch(clear());
+        navigate("/mywallet");
+        toast.success("Sipariş verildi.");
+      });
+    } else {
+      const querySnapshot = await getDocs(collection(db, "userbasket"));
+      const userBasketDocs = querySnapshot.docs.filter(
+        (doc) => doc.data().userEmail === user.email
+      );
+
+      if (userBasketDocs.length > 0) {
+        const docRefToDelete = doc(db, "userbasket", userBasketDocs[0].id);
+        await deleteDoc(docRefToDelete);
+      }
+
+      await addDoc(userBasketRef, {
+        userEmail: user.email,
+        basket: filteredBasketProducts,
+      }).then(() => {
+        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+
+        dispatch(clear());
+        navigate("/mywallet");
+        toast.success(
+          "Eski siparişlerinin kaldırılıp yeni siparişleriniz eklendi."
+        );
+      });
+    }
+  };
 
   return (
     <div className="mybasket-container">
@@ -83,7 +160,7 @@ const MyBasket = () => {
                 key={key}
                 productImage={item.product.image}
                 productTitle={item.product.title}
-                productPrice={item.product.price}
+                productPrice={item.product.price * amount}
                 productQuantity={item.product.quantity}
                 amount={amount}
                 disabledProduct={amount < item.product.quantity}
@@ -103,7 +180,9 @@ const MyBasket = () => {
             Alişverişe Devam Et
           </span>
         ) : (
-          <span className="confirm-basket-button">Sepeti Onayla</span>
+          <span onClick={() => addToWallet()} className="confirm-basket-button">
+            Sepeti Onayla
+          </span>
         )}
       </div>
     </div>

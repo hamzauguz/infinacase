@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import store from "../store";
+import store, { persistor } from "../store";
 import { login as loginHandle, logout as logoutHandle } from "../store/auth";
 import { clear } from "../store/cartSlice";
 
@@ -32,6 +32,7 @@ onAuthStateChanged(auth, (user) => {
       })
     );
   } else {
+    persistor.purge();
     store.dispatch(logoutHandle());
     store.dispatch(clear());
   }
