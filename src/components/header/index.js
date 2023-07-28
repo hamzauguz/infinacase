@@ -20,20 +20,18 @@ const Header = () => {
 
   const [avatarButton, setAvatarButton] = useState(false);
   const totalQuantity = useSelector(selectTotalQuantity);
-  // const [userWalletBalance, setUserWalletBalance] = useState(30000);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchBalance());
-  }, [dispatch]);
+  }, [user]);
 
-  const findBalance = balanceData.find(
+  const findBalance = balanceData?.find(
     (item) => item.balance.userEmail === user.email
   );
-  console.log("findBalance", findBalance);
 
-  // console.log("header find: ", findBalance.balance.balance);
-  console.log("balanceData: ", balanceData);
+  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
 
   useEffect(() => {
     setAvatarButton(false);
@@ -55,18 +53,6 @@ const Header = () => {
     });
   };
 
-  // useEffect(() => {
-  //   getUserData(user.email, "userwallet")
-  //     .then((data) => {
-  //       setUserWalletBalance(data, "userwallet");
-  //     })
-  //     .catch((error) => {
-  //       console.log("Hata oluştu: ", error);
-  //     });
-  // }, []);
-
-  // console.log("userWalletData: ", userWalletBalance);
-  // console.log("findBalance", findBalance);
   return (
     <div className="Navbar">
       <img
@@ -95,7 +81,7 @@ const Header = () => {
                 <>
                   <div className="header-wallet-container">
                     <span>Cüzdanım</span>
-                    <PriceCard balance={findBalance.balance.balance} />
+                    <PriceCard balance={userWalletBalance} />
                   </div>
                 </>
               }

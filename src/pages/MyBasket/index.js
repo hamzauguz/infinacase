@@ -74,6 +74,19 @@ const MyBasket = () => {
       dispatch(decrement(item.id));
     }
   };
+  const confirmProducts = useSelector(
+    (state) => state.confirmProduct.productsArray
+  );
+
+  const findConfirmProduct = confirmProducts?.find(
+    (item) => item.basket.userEmail === user.email
+  );
+
+  console.log("findConfirmProduct: ", findConfirmProduct);
+
+  const isBasketNotEmpty = !!findConfirmProduct;
+
+  console.log("isBasketNotEmpty: ", isBasketNotEmpty);
 
   console.log("totalPrice: ", totalPrice);
   const addToWallet = async () => {
