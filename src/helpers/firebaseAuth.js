@@ -35,7 +35,6 @@ export const getUserData = async (userEmail, collection) => {
 
     return userWalletData;
   } catch (error) {
-    console.log("Hata oluştu: ", error);
     return [];
   }
 };
@@ -57,7 +56,6 @@ export const getUserBasketData = async (userEmail, collection) => {
 
     return userBasketData;
   } catch (error) {
-    console.log("Hata oluştu: ", error);
     return [];
   }
 };
@@ -72,7 +70,7 @@ export const register = async (email, password, displayName) => {
       toast.success("Kayıt başarıyla oluşturuldu.");
 
       const userWalletRef = getUserCollection(db, "userwallet");
-      console.log("userWalletRef: ", userWalletRef);
+
       await addDoc(userWalletRef, {
         userEmail: user.user.email,
         balance: 30000,
@@ -89,7 +87,6 @@ export const register = async (email, password, displayName) => {
     });
     return user;
   } catch (error) {
-    console.log("error::: ", error);
     toast.error(error.message);
   }
 };

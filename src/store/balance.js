@@ -19,7 +19,6 @@ export const addBalanceToFirestore = createAsyncThunk(
   }
 );
 
-// fetch books
 export const fetchBalance = createAsyncThunk(
   "balance/fetchBalance",
   async () => {
@@ -42,14 +41,6 @@ export const updateBalanceAsync = createAsyncThunk(
 export const updateBalance = createAsyncThunk(
   "balance/updateBalance",
   async (editedBalance) => {
-    // const balance = await getDocs(collection(db, "userwallet"));
-    // for (var snap of balance.docs) {
-    //   if (snap.id === editedBalance.id) {
-    //     const balanceRef = doc(db, "userwallet", snap.id);
-    //     await updateDoc(balanceRef, editedBalance.balance);
-    //   }
-    // }
-    // return editedBalance;
     const balanceRef = doc(db, "userwallet", editedBalance.id);
     await updateDoc(balanceRef, { balance: editedBalance.balance });
     return editedBalance;
@@ -61,9 +52,7 @@ const balance = createSlice({
   initialState: {
     balanceArray: [],
   },
-  // reducers: {
 
-  // },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBalance.fulfilled, (state, action) => {

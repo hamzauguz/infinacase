@@ -90,13 +90,8 @@ const MyBasket = () => {
     (item) => item.basket.userEmail === user.email
   );
 
-  console.log("findConfirmProduct: ", findConfirmProduct);
-
   const isBasketNotEmpty = !!findConfirmProduct;
 
-  console.log("isBasketNotEmpty: ", isBasketNotEmpty);
-
-  console.log("totalPrice: ", totalPrice);
   const addToWallet = async () => {
     if (totalPrice > userWalletBalance) return toast.error("Yetersiz Bakiye!");
     const userBasketRef = getUserCollection(db, "userbasket");

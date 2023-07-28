@@ -35,7 +35,6 @@ export const fetchConfirmProduct = createAsyncThunk(
   }
 );
 
-// delete book
 export const deleteConfirmProduct = createAsyncThunk(
   "userbasket/deleteConfirmProduct",
   async (id) => {
@@ -49,7 +48,6 @@ export const deleteConfirmProduct = createAsyncThunk(
   }
 );
 
-// update book
 export const updateConfirmProduct = createAsyncThunk(
   "userbasket/updateConfirmProduct",
   async (editedConfirmProduct) => {

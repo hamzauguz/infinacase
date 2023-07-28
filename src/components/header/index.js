@@ -81,7 +81,10 @@ const Header = () => {
                 <>
                   <div className="header-wallet-container">
                     <span>Cüzdanım</span>
-                    <PriceCard balance={userWalletBalance} />
+                    <PriceCard
+                      priceCardStyle={"header-wallet-style"}
+                      balance={userWalletBalance}
+                    />
                   </div>
                 </>
               }
@@ -93,7 +96,7 @@ const Header = () => {
                 setIsOpen(false);
                 navigate("/mybasket");
               }}
-              basketPlace={!totalQuantity == 0}
+              basketPlace={!totalQuantity === 0}
               basketCount={totalQuantity}
             />
           </>

@@ -30,7 +30,6 @@ const Home = () => {
         await dispatch(fetchProducts());
         setLoading(false);
       } catch (error) {
-        console.error("Ürünler alınırken bir hata oluştu:", error);
         setLoading(false);
       }
     };

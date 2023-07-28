@@ -2,10 +2,14 @@ import React from "react";
 import "./Styles.PriceCard.css";
 
 const PriceCard = ({ balance, priceCardStyle }) => {
-  const formattedBalance = balance.toLocaleString("tr-TR");
+  const formattedBalance = balance
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
   return (
-    <div className={`price-card-container ${priceCardStyle}`}>{balance} TL</div>
+    <div className={`price-card-container ${priceCardStyle}`}>
+      {formattedBalance} TL
+    </div>
   );
 };
 
