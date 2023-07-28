@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 
@@ -15,38 +15,36 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 
 import { useNavigate } from "react-router-dom";
-import {
-  getUserBasketData,
-  getUserCollection,
-  getUserData,
-} from "../../helpers/firebaseAuth";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { getUserCollection } from "../../helpers/firebaseAuth";
+import { addDoc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { selectTotalPrice } from "../../store/selectors";
 
 import "./Styles.MyBasket.css";
+import { fetchBalance, updateBalance } from "../../store/balance";
 
 const MyBasket = () => {
   const myBasketProducts = useSelector((state) => state.card.card);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-  const [userBasketData, setUserBasketData] = useState([]);
+
   const { user } = useSelector((state) => state.auth);
+  const balanceData = useSelector((state) => state.balance.balanceArray);
+  const totalPrice = useSelector(selectTotalPrice);
+
+  const findBalance = balanceData.find(
+    (item) => item.balance.userEmail === user.email
+  );
 
   const filteredBasketProducts = myBasketProducts.filter(
     (item) => item.quantity > 0
   );
+
+  const newBalance = findBalance.balance.balance - totalPrice;
+
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [dispatch]);
 
   const productAmountState = (amount, item) => {
     if (amount == 0) {
@@ -77,75 +75,19 @@ const MyBasket = () => {
     }
   };
 
-  useEffect(() => {
-    getUserBasketData(user.email, "userbasket")
-      .then((data) => {
-        setUserBasketData(data);
-      })
-      .catch((error) => {
-        console.log("Hata oluştu basket: ", error);
-      });
-  }, []);
-
-  const filteredUserBasket = userBasketData.filter(
-    (item) => item.userEmail === user.email
-  );
-
-  console.log("filteredUserBasket: ", filteredUserBasket.length !== 0);
-  const [userWalletBalance, setUserWalletBalance] = useState();
-
-  useEffect(() => {
-    getUserData(user.email, "userwallet")
-      .then((data) => {
-        setUserWalletBalance(data, "userwallet");
-      })
-      .catch((error) => {
-        console.log("Hata oluştu: ", error);
-      });
-  }, []);
-
-  console.log("userWalletBalance: ", userWalletBalance);
-
-  const totalPrice = useSelector(selectTotalPrice);
-
-  const newBalance = userWalletBalance - totalPrice;
-
-  const updateBalance = async () => {
-    const userRef = query(
-      collection(db, "userwallet"),
-      where("userEmail", "==", user.email)
-    );
-    const findUsers = await getDocs(userRef);
-    findUsers.forEach(async (user) => {
-      const getUser = doc(db, "userwallet", user.id);
-      await updateDoc(getUser, {
-        balance: newBalance,
-      });
-    });
-  };
-
-  const deleteDocument = async (collectionName, documentId) => {
-    try {
-      const docRef = doc(db, collectionName, documentId);
-      await deleteDoc(docRef);
-      console.log("Belge başarıyla silindi.");
-    } catch (error) {
-      console.error("Belge silme işlemi başarısız oldu: ", error);
-    }
-  };
-
   console.log("totalPrice: ", totalPrice);
   const addToWallet = async () => {
-    deleteDocument(db, "userbasket", user.id);
+    if (totalPrice > findBalance.balance.balance)
+      return toast.error("Yetersiz Bakiye!");
     const userBasketRef = getUserCollection(db, "userbasket");
     await addDoc(userBasketRef, {
       userEmail: user.email,
       basket: filteredBasketProducts,
     }).then(() => {
+      dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
       dispatch(clear());
       navigate("/mywallet");
       toast.success("Sipariş verildi.");
-      updateBalance();
     });
   };
 
@@ -177,7 +119,7 @@ const MyBasket = () => {
                 key={key}
                 productImage={item.product.image}
                 productTitle={item.product.title}
-                productPrice={item.product.price}
+                productPrice={item.product.price * amount}
                 productQuantity={item.product.quantity}
                 amount={amount}
                 disabledProduct={amount < item.product.quantity}

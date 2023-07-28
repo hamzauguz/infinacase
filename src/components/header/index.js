@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HeaderButton from "../header-button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import {
@@ -13,16 +13,31 @@ import { selectTotalQuantity } from "../../store/selectors";
 import "./Styles.Header.css";
 import PriceCard from "../price-card";
 import { db } from "../../firebase/config";
+import { fetchBalance } from "../../store/balance";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const balanceData = useSelector((state) => state.balance.balanceArray);
 
   const navigate = useNavigate();
 
   const [avatarButton, setAvatarButton] = useState(false);
   const totalQuantity = useSelector(selectTotalQuantity);
-  const [userWalletBalance, setUserWalletBalance] = useState(30000);
+  // const [userWalletBalance, setUserWalletBalance] = useState(30000);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [dispatch, balanceData]);
+
+  const findBalance = balanceData.find(
+    (item) => item.balance.userEmail === user.email
+  );
+  console.log("findBalance", findBalance);
+
+  // console.log("header find: ", findBalance.balance.balance);
+  console.log("balanceData: ", balanceData);
 
   useEffect(() => {
     setAvatarButton(false);
@@ -44,18 +59,18 @@ const Header = () => {
     });
   };
 
-  useEffect(() => {
-    getUserData(user.email, "userwallet")
-      .then((data) => {
-        setUserWalletBalance(data, "userwallet");
-      })
-      .catch((error) => {
-        console.log("Hata oluştu: ", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getUserData(user.email, "userwallet")
+  //     .then((data) => {
+  //       setUserWalletBalance(data, "userwallet");
+  //     })
+  //     .catch((error) => {
+  //       console.log("Hata oluştu: ", error);
+  //     });
+  // }, []);
 
-  console.log("userWalletData: ", userWalletBalance);
-
+  // console.log("userWalletData: ", userWalletBalance);
+  // console.log("findBalance", findBalance);
   return (
     <div className="Navbar">
       <img
@@ -84,7 +99,7 @@ const Header = () => {
                 <>
                   <div className="header-wallet-container">
                     <span>Cüzdanım</span>
-                    <PriceCard balance={userWalletBalance} />
+                    <PriceCard balance={findBalance.balance.balance} />
                   </div>
                 </>
               }

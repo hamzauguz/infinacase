@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Styles.MyWallet.css";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 import PriceCard from "../../components/price-card";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBalance } from "../../store/balance";
 
 const MyWallet = () => {
+  const data = useSelector((state) => state.balance.balanceArray);
+  const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  // fetch books
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [dispatch]);
+
+  const findBalance = data.find((item) => item.userEmail === user.email);
+
+  console.log("data findBalance: ", findBalance);
+
   return (
     <div>
       <div className="page-header-container mywallet-page-header">
