@@ -36,11 +36,13 @@ const MyBasket = () => {
     (item) => item.balance.userEmail === user.email
   );
 
+  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
+
   const filteredBasketProducts = myBasketProducts.filter(
     (item) => item.quantity > 0
   );
 
-  const newBalance = findBalance.balance.balance - totalPrice;
+  const newBalance = userWalletBalance - totalPrice;
 
   useEffect(() => {
     dispatch(fetchBalance());
@@ -90,18 +92,21 @@ const MyBasket = () => {
 
   console.log("totalPrice: ", totalPrice);
   const addToWallet = async () => {
-    if (totalPrice > findBalance.balance.balance)
-      return toast.error("Yetersiz Bakiye!");
+    if (totalPrice > userWalletBalance) return toast.error("Yetersiz Bakiye!");
     const userBasketRef = getUserCollection(db, "userbasket");
-    await addDoc(userBasketRef, {
-      userEmail: user.email,
-      basket: filteredBasketProducts,
-    }).then(() => {
-      dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
-      dispatch(clear());
-      navigate("/mywallet");
-      toast.success("Sipariş verildi.");
-    });
+    if (!isBasketNotEmpty) {
+      await addDoc(userBasketRef, {
+        userEmail: user.email,
+        basket: filteredBasketProducts,
+      }).then(() => {
+        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+
+        dispatch(clear());
+        navigate("/mywallet");
+        toast.success("Sipariş verildi.");
+      });
+    } else {
+    }
   };
 
   return (

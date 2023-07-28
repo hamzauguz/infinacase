@@ -18,7 +18,9 @@ const MyWallet = () => {
   const findBalance = balanceData.find(
     (item) => item.balance.userEmail === user.email
   );
-  console.log("findBalance: ", findBalance.balance.balance);
+  // console.log("findBalance: ", findBalance.balance.balance);
+
+  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
 
   const findConfirmProduct = confirmProducts?.find(
     (item) => item.basket.userEmail === user.email
@@ -34,7 +36,7 @@ const MyWallet = () => {
     (total, item) => total + item.quantity,
     0
   );
-  const beforeBalance = findBalance.balance.balance + totalProductPrice;
+  const beforeBalance = userWalletBalance + totalProductPrice;
 
   useEffect(() => {
     dispatch(fetchBalance());
@@ -50,7 +52,7 @@ const MyWallet = () => {
             src={require("../../assets/images/wallet.png")}
             title={"Cüzdanım"}
           />
-          <PriceCard balance={findBalance.balance.balance} />
+          <PriceCard balance={userWalletBalance} />
         </div>
       </div>
       <div className="my-wallet-container">
@@ -98,7 +100,7 @@ const MyWallet = () => {
               </div>
               <div className="mywallet-balance-item-container">
                 <span className="mw-balance-item-title">Kalan bakiyeniz:</span>
-                <PriceCard balance={findBalance.balance.balance} />
+                <PriceCard balance={userWalletBalance} />
               </div>
             </div>
           </div>
