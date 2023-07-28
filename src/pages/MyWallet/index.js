@@ -15,7 +15,7 @@ const MyWallet = () => {
   // fetch books
   useEffect(() => {
     dispatch(fetchBalance());
-  }, [dispatch]);
+  }, []);
 
   const findBalance = data.find((item) => item.userEmail === user.email);
 

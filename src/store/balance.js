@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   addDoc,
   collection,
-  deleteDoc,
   doc,
   getDocs,
   updateDoc,
@@ -11,7 +10,6 @@ import {
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../firebase/config";
 
-// add book to firestore
 export const addBalanceToFirestore = createAsyncThunk(
   "balance/addBalanceToFirestore",
   async (balance) => {

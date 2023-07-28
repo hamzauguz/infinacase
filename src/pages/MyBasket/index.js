@@ -47,7 +47,7 @@ const MyBasket = () => {
   }, [dispatch]);
 
   const productAmountState = (amount, item) => {
-    if (amount == 0) {
+    if (amount === 0) {
       dispatch(addToCart(item));
     } else {
       dispatch(increment(item.id));
@@ -55,7 +55,7 @@ const MyBasket = () => {
   };
 
   const removeProduct = (amount, item) => {
-    if (amount == 1) {
+    if (amount === 1) {
       Swal.fire({
         title: "Sil",
         text: `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,

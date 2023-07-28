@@ -3,16 +3,12 @@ import HeaderButton from "../header-button";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
-import {
-  getUserCollection,
-  getUserData,
-  logout,
-} from "../../helpers/firebaseAuth";
+import { logout } from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
 
 import "./Styles.Header.css";
 import PriceCard from "../price-card";
-import { db } from "../../firebase/config";
+
 import { fetchBalance } from "../../store/balance";
 
 const Header = () => {
@@ -29,7 +25,7 @@ const Header = () => {
 
   useEffect(() => {
     dispatch(fetchBalance());
-  }, [dispatch, balanceData]);
+  }, [dispatch]);
 
   const findBalance = balanceData.find(
     (item) => item.balance.userEmail === user.email
