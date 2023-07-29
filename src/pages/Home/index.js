@@ -11,13 +11,16 @@ import debounce from "lodash.debounce";
 import { filterItem } from "../../helpers/filterItem";
 
 import "./Styles.Home.css";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   const products = useSelector((state) => state.product.productsArray);
   const addedCard = useSelector((state) => state.card.card);
+  const { user } = useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -42,10 +45,21 @@ const Home = () => {
   }, [products]);
 
   const productAmountState = (amount, item) => {
-    if (amount === 0) {
-      dispatch(addToCart(item));
+    if (user) {
+      toast.success("Ürün Eklendi", {
+        position: "top-center",
+      });
+      if (amount === 0) {
+        dispatch(addToCart(item));
+      } else {
+        dispatch(increment(item.id));
+      }
     } else {
-      dispatch(increment(item.id));
+      // User is not logged in, navigate to the login page
+      toast.warning("Ürün eklemek için giriş yapmanız gerekli.", {
+        position: "top-center",
+      });
+      navigate("/login");
     }
   };
 
@@ -137,9 +151,6 @@ const Home = () => {
                     amount={amount}
                     disabledProduct={amount < item.product.quantity}
                     onIncrementClick={() => {
-                      toast.success("Ürün Eklendi", {
-                        position: "top-center",
-                      });
                       productAmountState(amount, item);
                     }}
                     onDecrementClick={() => {
