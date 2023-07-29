@@ -61,7 +61,7 @@ const MyWallet = () => {
   useEffect(() => {
     dispatch(fetchBalance());
     dispatch(fetchConfirmProduct());
-  }, []);
+  }, [dispatch]);
 
   const [basketQuantities, setBasketQuantities] = useState(
     basketItems.map((item) => ({ id: item.id, quantity: item.quantity }))
