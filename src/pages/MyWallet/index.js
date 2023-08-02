@@ -6,14 +6,13 @@ import PriceCard from "../../components/price-card";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBalance } from "../../store/balance";
 import { fetchConfirmProduct } from "../../store/confirmProductSlice";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
 import { filterItem } from "../../helpers/filterItem";
-import { chartData } from "../../helpers/chartData";
-
-ChartJS.register(ArcElement, Tooltip, Legend);
+import LineBarChart from "../../components/line-bar-chart";
+import { getproductPricesByCategory } from "../../helpers/chart-helpers";
 
 const MyWallet = () => {
+  const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
+
   const dispatch = useDispatch();
 
   const balanceData = useSelector((state) => state.balance.balanceArray);
@@ -45,18 +44,18 @@ const MyWallet = () => {
 
   const categoryNames = filterItem.map((item) => item.categoryName);
 
-  const getproductPricesByCategory = () => {
-    const productPrices = Array(categoryNames.length).fill(0);
-    basketItems.forEach((item) => {
-      const categoryIndex = categoryNames.indexOf(item.product.category);
-      if (categoryIndex !== -1) {
-        productPrices[categoryIndex] += item.quantity * item.product.price;
-      }
-    });
-    return productPrices;
-  };
+  // const getproductPricesByCategory = () => {
+  //   const productPrices = Array(categoryNames.length).fill(0);
+  //   basketItems.forEach((item) => {
+  //     const categoryIndex = categoryNames.indexOf(item.product.category);
+  //     if (categoryIndex !== -1) {
+  //       productPrices[categoryIndex] += item.quantity * item.product.price;
+  //     }
+  //   });
+  //   return productPrices;
+  // };
 
-  const productPrices = getproductPricesByCategory();
+  const productPrices = getproductPricesByCategory(categoryNames, basketItems);
 
   useEffect(() => {
     dispatch(fetchBalance());
@@ -99,7 +98,7 @@ const MyWallet = () => {
                     mybasketCardPriceStyle={"mywallet-product-price"}
                     productImage={item.product.image}
                     productTitle={item.product.title}
-                    productPrice={item.product.price}
+                    productPrice={item.product.price.toFixed(2)}
                     productQuantity={item.product.quantity}
                     amount={amount}
                     disabledProduct={true}
@@ -164,7 +163,7 @@ const MyWallet = () => {
             </div>
           </div>
           <div className="chart-container">
-            <Doughnut data={chartData(productPrices)} />
+            <LineBarChart productPrices={productPrices} labels={labels} />
           </div>
         </div>
       </div>
