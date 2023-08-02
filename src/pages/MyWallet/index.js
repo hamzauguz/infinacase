@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import "./Styles.MyWallet.css";
+import React, { useEffect, useState } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 import PriceCard from "../../components/price-card";
@@ -8,37 +7,44 @@ import { fetchConfirmProduct } from "../../store/confirmProductSlice";
 import { filterItem } from "../../helpers/filterItem";
 import LineBarChart from "../../components/line-bar-chart";
 import { getproductPricesByCategory } from "../../helpers/chart-helpers";
-import {
-  selectCurrentUserBalance,
-  selectCurrentUserBasketItems,
-} from "../../store/selectors";
+
+import "./Styles.MyWallet.css";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
-  const currentUserBasketItems = useSelector(selectCurrentUserBasketItems);
-  const currentUserBalance = useSelector(selectCurrentUserBalance);
+  const [confirmProducts, setConfirmProducts] = useState([]);
 
-  const totalProductPrice = currentUserBasketItems.reduce(
+  useEffect(() => {
+    dispatch(fetchConfirmProduct())
+      .then((products) => {
+        setConfirmProducts(products.payload.basket.basket);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, [dispatch]);
+
+  const balanceData = useSelector((state) => state.balance.balanceArray);
+
+  const userBalance = balanceData.balance.balance;
+
+  const totalProductPrice = confirmProducts.reduce(
     (total, item) => total + item.quantity * item.product.price,
     0
   );
-  const totalQuantity = currentUserBasketItems.reduce(
+  const totalQuantity = confirmProducts.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
-  const beforeBalance = currentUserBalance + totalProductPrice;
+  const beforeBalance = userBalance + totalProductPrice;
   const categoryNames = filterItem.map((item) => item.categoryName);
   const productPrices = getproductPricesByCategory(
     categoryNames,
-    currentUserBasketItems
+    confirmProducts
   );
 
   const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
-
-  useEffect(() => {
-    dispatch(fetchConfirmProduct());
-  }, [dispatch]);
 
   return (
     <div>
@@ -49,7 +55,7 @@ const MyWallet = () => {
             src={require("../../assets/images/wallet.png")}
             title={"Cüzdanım"}
           />
-          <PriceCard balance={currentUserBalance} />
+          <PriceCard balance={userBalance} />
         </div>
       </div>
       <div className="my-wallet-container">
@@ -58,8 +64,8 @@ const MyWallet = () => {
             <span className="my-wallet-product-title">
               Sepetinizdeki Ürünler ({totalQuantity})
             </span>
-            {currentUserBasketItems &&
-              currentUserBasketItems?.map((item, key) => {
+            {confirmProducts &&
+              confirmProducts?.map((item, key) => {
                 return (
                   <BasketProductCard
                     key={key}
@@ -91,7 +97,7 @@ const MyWallet = () => {
               </div>
               <div className="mywallet-balance-item-container">
                 <span className="mw-balance-item-title">Kalan bakiyeniz:</span>
-                <PriceCard balance={currentUserBalance} />
+                <PriceCard balance={userBalance} />
               </div>
             </div>
           </div>

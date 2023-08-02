@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 
@@ -26,33 +26,44 @@ import {
 import { db } from "../../firebase/config";
 import { selectTotalPrice } from "../../store/selectors";
 
-import "./Styles.MyBasket.css";
 import { fetchBalance, updateBalance } from "../../store/balance";
+import { fetchConfirmProduct } from "../../store/confirmProductSlice";
+
+import "./Styles.MyBasket.css";
 
 const MyBasket = () => {
-  const myBasketProducts = useSelector((state) => state.card.card);
   const dispatch = useDispatch();
+
+  const [confirmProducts, setConfirmProducts] = useState([]);
+
+  useEffect(() => {
+    dispatch(fetchConfirmProduct())
+      .then((products) => {
+        setConfirmProducts(products.payload.basket.basket);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchBalance());
+  }, [dispatch]);
+
+  const myBasketProducts = useSelector((state) => state.card.card);
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.auth);
   const balanceData = useSelector((state) => state.balance.balanceArray);
   const totalPrice = useSelector(selectTotalPrice);
 
-  const findBalance = balanceData.find(
-    (item) => item.balance.userEmail === user.email
-  );
-
-  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
+  const userBalance = balanceData;
 
   const filteredBasketProducts = myBasketProducts.filter(
     (item) => item.quantity > 0
   );
 
-  const newBalance = userWalletBalance - totalPrice;
-
-  useEffect(() => {
-    dispatch(fetchBalance());
-  }, [dispatch]);
+  const newBalance = userBalance.balance.balance - totalPrice;
 
   const productAmountState = (amount, item) => {
     if (amount === 0) {
@@ -82,25 +93,19 @@ const MyBasket = () => {
       dispatch(decrement(item.id));
     }
   };
-  const confirmProducts = useSelector(
-    (state) => state.confirmProduct.productsArray
-  );
 
-  const findConfirmProduct = confirmProducts?.find(
-    (item) => item.basket.userEmail === user.email
-  );
-
-  const isBasketNotEmpty = !!findConfirmProduct;
+  const isBasketNotEmpty = !!confirmProducts;
 
   const addToWallet = async () => {
-    if (totalPrice > userWalletBalance) return toast.error("Yetersiz Bakiye!");
+    if (totalPrice > userBalance.balance.balance)
+      return toast.error("Yetersiz Bakiye!");
     const userBasketRef = getUserCollection(db, "userbasket");
     if (!isBasketNotEmpty) {
       await addDoc(userBasketRef, {
         userEmail: user.email,
         basket: filteredBasketProducts,
       }).then(() => {
-        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+        dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
 
         dispatch(clear());
         navigate("/mywallet");
@@ -121,7 +126,7 @@ const MyBasket = () => {
         userEmail: user.email,
         basket: filteredBasketProducts,
       }).then(() => {
-        dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
+        dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
 
         dispatch(clear());
         navigate("/mywallet");

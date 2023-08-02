@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../helpers/firebaseAuth";
 import { selectTotalQuantity } from "../../store/selectors";
+import PriceCard from "../price-card";
+import { fetchBalance } from "../../store/balance";
 
 import "./Styles.Header.css";
-import PriceCard from "../price-card";
-
-import { fetchBalance } from "../../store/balance";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +25,6 @@ const Header = () => {
   useEffect(() => {
     dispatch(fetchBalance());
   }, [user]);
-
-  const findBalance = balanceData?.find(
-    (item) => item.balance.userEmail === user.email
-  );
-
-  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
 
   useEffect(() => {
     setAvatarButton(false);
@@ -52,6 +45,8 @@ const Header = () => {
       replace: true,
     });
   };
+
+  const userBalance = balanceData?.balance.balance;
 
   return (
     <div className="Navbar">
@@ -83,7 +78,8 @@ const Header = () => {
                     <span>Cüzdanım</span>
                     <PriceCard
                       priceCardStyle={"header-wallet-style"}
-                      balance={userWalletBalance}
+                      balance={userBalance}
+                      // balance={1000}
                     />
                   </div>
                 </>

@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../firebase/config";
+import { selectCurrentUserEmail } from "./selectors";
 
 export const addConfirmProductToFirestore = createAsyncThunk(
   "userbasket/addConfirmProductToFirestore",
@@ -25,12 +26,16 @@ export const addConfirmProductToFirestore = createAsyncThunk(
 
 export const fetchConfirmProduct = createAsyncThunk(
   "userbasket/fetchConfirmProduct",
-  async () => {
+  async (_, { getState }) => {
+    const currentUserEmail = selectCurrentUserEmail(getState());
     const querySnapshot = await getDocs(collection(db, "userbasket"));
-    const products = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      basket: doc.data(),
-    }));
+    const products = querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        basket: doc.data(),
+      }))
+      .find((product) => product.basket.userEmail === currentUserEmail);
+
     return products;
   }
 );
