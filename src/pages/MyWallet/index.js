@@ -1,70 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./Styles.MyWallet.css";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 import PriceCard from "../../components/price-card";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBalance } from "../../store/balance";
 import { fetchConfirmProduct } from "../../store/confirmProductSlice";
 import { filterItem } from "../../helpers/filterItem";
 import LineBarChart from "../../components/line-bar-chart";
 import { getproductPricesByCategory } from "../../helpers/chart-helpers";
+import {
+  selectCurrentUserBalance,
+  selectCurrentUserBasketItems,
+} from "../../store/selectors";
 
 const MyWallet = () => {
-  const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
-
   const dispatch = useDispatch();
+  const currentUserBasketItems = useSelector(selectCurrentUserBasketItems);
+  const currentUserBalance = useSelector(selectCurrentUserBalance);
 
-  const balanceData = useSelector((state) => state.balance.balanceArray);
-  const { user } = useSelector((state) => state.auth);
-  const confirmProducts = useSelector(
-    (state) => state.confirmProduct.productsArray
-  );
-  const findBalance = balanceData.find(
-    (item) => item.balance.userEmail === user.email
-  );
-
-  const userWalletBalance = findBalance ? findBalance.balance.balance : 0;
-
-  const findConfirmProduct = confirmProducts?.find(
-    (item) => item.basket.userEmail === user.email
-  );
-
-  const basketItems = findConfirmProduct?.basket?.basket ?? [];
-
-  const totalProductPrice = basketItems.reduce(
+  const totalProductPrice = currentUserBasketItems.reduce(
     (total, item) => total + item.quantity * item.product.price,
     0
   );
-  const totalQuantity = basketItems.reduce(
+  const totalQuantity = currentUserBasketItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
-  const beforeBalance = userWalletBalance + totalProductPrice;
 
+  const beforeBalance = currentUserBalance + totalProductPrice;
   const categoryNames = filterItem.map((item) => item.categoryName);
+  const productPrices = getproductPricesByCategory(
+    categoryNames,
+    currentUserBasketItems
+  );
 
-  // const getproductPricesByCategory = () => {
-  //   const productPrices = Array(categoryNames.length).fill(0);
-  //   basketItems.forEach((item) => {
-  //     const categoryIndex = categoryNames.indexOf(item.product.category);
-  //     if (categoryIndex !== -1) {
-  //       productPrices[categoryIndex] += item.quantity * item.product.price;
-  //     }
-  //   });
-  //   return productPrices;
-  // };
-
-  const productPrices = getproductPricesByCategory(categoryNames, basketItems);
+  const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
 
   useEffect(() => {
-    dispatch(fetchBalance());
     dispatch(fetchConfirmProduct());
   }, [dispatch]);
-
-  const [basketQuantities, setBasketQuantities] = useState(
-    basketItems.map((item) => ({ id: item.id, quantity: item.quantity }))
-  );
 
   return (
     <div>
@@ -75,7 +49,7 @@ const MyWallet = () => {
             src={require("../../assets/images/wallet.png")}
             title={"Cüzdanım"}
           />
-          <PriceCard balance={userWalletBalance} />
+          <PriceCard balance={currentUserBalance} />
         </div>
       </div>
       <div className="my-wallet-container">
@@ -84,13 +58,8 @@ const MyWallet = () => {
             <span className="my-wallet-product-title">
               Sepetinizdeki Ürünler ({totalQuantity})
             </span>
-            {findConfirmProduct &&
-              findConfirmProduct?.basket.basket.map((item, key) => {
-                const basketQuantity = basketQuantities.find(
-                  (q) => q.id === item.id
-                );
-                const amount = basketQuantity ? basketQuantity.quantity : 0;
-
+            {currentUserBasketItems &&
+              currentUserBasketItems?.map((item, key) => {
                 return (
                   <BasketProductCard
                     key={key}
@@ -100,29 +69,9 @@ const MyWallet = () => {
                     productTitle={item.product.title}
                     productPrice={item.product.price.toFixed(2)}
                     productQuantity={item.product.quantity}
-                    amount={amount}
+                    amount={item.quantity}
                     disabledProduct={true}
                     disabledDecrement={true}
-                    onIncrementClick={() => {
-                      setBasketQuantities((prevQuantities) =>
-                        prevQuantities.map((q) =>
-                          q.id === item.id
-                            ? { ...q, quantity: q.quantity + 1 }
-                            : q
-                        )
-                      );
-                    }}
-                    onDecrementClick={() => {
-                      if (amount.quantity > 1) {
-                        setBasketQuantities((prevQuantities) =>
-                          prevQuantities.map((q) =>
-                            q.id === item.id
-                              ? { ...q, quantity: q.quantity - 1 }
-                              : q
-                          )
-                        );
-                      }
-                    }}
                   />
                 );
               })}
@@ -142,7 +91,7 @@ const MyWallet = () => {
               </div>
               <div className="mywallet-balance-item-container">
                 <span className="mw-balance-item-title">Kalan bakiyeniz:</span>
-                <PriceCard balance={userWalletBalance} />
+                <PriceCard balance={currentUserBalance} />
               </div>
             </div>
           </div>
@@ -153,9 +102,7 @@ const MyWallet = () => {
               Harcamalarınızın Dağılımı
             </span>
             <div className="expenses-price">
-              <span className="mw-balance-item-title">
-                Toplam sepet tutarınız:
-              </span>
+              <span className="mw-balance-item-title">Toplam harcamanız:</span>
               <PriceCard
                 priceCardStyle={"expenses-inside"}
                 balance={totalProductPrice}
@@ -166,6 +113,7 @@ const MyWallet = () => {
             <LineBarChart productPrices={productPrices} labels={labels} />
           </div>
         </div>
+        <span className="confirm-basket-button">Sepeti Onayla</span>
       </div>
     </div>
   );

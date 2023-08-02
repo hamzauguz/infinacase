@@ -26,13 +26,13 @@ ChartJS.register(
 );
 
 const LineBarChart = ({ productPrices, labels }) => {
-  const isMobile = useMediaQuery({ query: "(max-width: 1100px)" });
+  const isResponsive = useMediaQuery({ query: "(max-width: 1100px)" });
 
   return (
     <div className="chart-container">
       <Bar
         options={chartOptions}
-        data={chartData(productPrices, labels, isMobile ? 40 : 100)}
+        data={chartData(productPrices, labels, isResponsive ? 40 : 100)}
       />
     </div>
   );

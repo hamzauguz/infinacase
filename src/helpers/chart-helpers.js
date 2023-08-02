@@ -13,7 +13,7 @@ export const chartData = (productPrices, labels, barThickness) => {
           anchor: "end",
           color: "#349590",
           font: {
-            weight: "600", // Kalın font ekleyin
+            weight: "600",
           },
           formatter: (value) => value.toFixed(2) + " TL",
         },
@@ -50,7 +50,7 @@ export const chartOptions = {
         display: false,
         color: "green",
       },
-      barPercentage: 0.8, // Bar genişliği yüzde olarak (0.8 örnek bir değer, deneyerek ayarlayabilirsiniz)
+      barPercentage: 0.8,
       categoryPercentage: 0.9,
     },
   },
