@@ -9,20 +9,25 @@ import LineBarChart from "../../components/line-bar-chart";
 import { getproductPricesByCategory } from "../../helpers/chart-helpers";
 
 import "./Styles.MyWallet.css";
+import { ThreeCircles } from "react-loader-spinner";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
   const [confirmProducts, setConfirmProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     dispatch(fetchConfirmProduct())
       .then((products) => {
         setConfirmProducts(products.payload.basket.basket);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
+        setLoading(true);
       });
-  }, [dispatch]);
+  }, []);
 
   const balanceData = useSelector((state) => state.balance.balanceArray);
 
@@ -48,79 +53,100 @@ const MyWallet = () => {
 
   return (
     <div>
-      <div className="page-header-container mywallet-page-header">
-        <div className="mywallet-nav-title">
-          <HeaderButton
-            headerButtonStyle={"mywallet-header-button"}
-            src={require("../../assets/images/wallet.png")}
-            title={"Cüzdanım"}
+      {loading ? (
+        <div className="loading-message">
+          <ThreeCircles
+            height="100"
+            width="100"
+            color="#84c7c4"
+            visible={true}
           />
-          <PriceCard balance={userBalance} />
         </div>
-      </div>
-      <div className="my-wallet-container">
-        <div className="basket-balance-container">
-          <div className="my-wallet-product-main">
-            <span className="my-wallet-product-title">
-              Sepetinizdeki Ürünler ({totalQuantity})
-            </span>
-            {confirmProducts &&
-              confirmProducts?.map((item, key) => {
-                return (
-                  <BasketProductCard
-                    key={key}
-                    mybasketCardStyle={"mywallet-product-card"}
-                    mybasketCardPriceStyle={"mywallet-product-price"}
-                    productImage={item.product.image}
-                    productTitle={item.product.title}
-                    productPrice={item.product.price.toFixed(2)}
-                    productQuantity={item.product.quantity}
-                    amount={item.quantity}
-                    disabledProduct={true}
-                    disabledDecrement={true}
-                  />
-                );
-              })}
-          </div>
-          <div className="mywallet-balance-main">
-            <span className="my-wallet-product-title">Bakiye Bilgileri</span>
-            <div className="mywallet-balance-container">
-              <div className="mywallet-balance-item-container">
-                <span className="mw-balance-item-title">Toplam bakiyeniz:</span>
-                <PriceCard balance={beforeBalance} />
-              </div>
-              <div className="mywallet-balance-item-container">
-                <span className="mw-balance-item-title">
-                  Toplam sepet tutarınız:
-                </span>
-                <PriceCard balance={totalProductPrice} />
-              </div>
-              <div className="mywallet-balance-item-container">
-                <span className="mw-balance-item-title">Kalan bakiyeniz:</span>
-                <PriceCard balance={userBalance} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="my-wallet-bottom-container">
-          <div className="expenses-container">
-            <span className="my-wallet-product-title">
-              Harcamalarınızın Dağılımı
-            </span>
-            <div className="expenses-price">
-              <span className="mw-balance-item-title">Toplam harcamanız:</span>
-              <PriceCard
-                priceCardStyle={"expenses-inside"}
-                balance={totalProductPrice}
+      ) : (
+        <>
+          <div className="page-header-container mywallet-page-header">
+            <div className="mywallet-nav-title">
+              <HeaderButton
+                headerButtonStyle={"mywallet-header-button"}
+                src={require("../../assets/images/wallet.png")}
+                title={"Cüzdanım"}
               />
+              <PriceCard balance={userBalance} />
             </div>
           </div>
-          <div className="chart-container">
-            <LineBarChart productPrices={productPrices} labels={labels} />
+          <div className="my-wallet-container">
+            <div className="basket-balance-container">
+              <div className="my-wallet-product-main">
+                <span className="my-wallet-product-title">
+                  Sepetinizdeki Ürünler ({totalQuantity})
+                </span>
+                {confirmProducts &&
+                  confirmProducts?.map((item, key) => {
+                    return (
+                      <BasketProductCard
+                        key={key}
+                        mybasketCardStyle={"mywallet-product-card"}
+                        mybasketCardPriceStyle={"mywallet-product-price"}
+                        productImage={item.product.image}
+                        productTitle={item.product.title}
+                        productPrice={item.product.price.toFixed(2)}
+                        productQuantity={item.product.quantity}
+                        amount={item.quantity}
+                        disabledProduct={true}
+                        disabledDecrement={true}
+                      />
+                    );
+                  })}
+              </div>
+              <div className="mywallet-balance-main">
+                <span className="my-wallet-product-title">
+                  Bakiye Bilgileri
+                </span>
+                <div className="mywallet-balance-container">
+                  <div className="mywallet-balance-item-container">
+                    <span className="mw-balance-item-title">
+                      Toplam bakiyeniz:
+                    </span>
+                    <PriceCard balance={beforeBalance} />
+                  </div>
+                  <div className="mywallet-balance-item-container">
+                    <span className="mw-balance-item-title">
+                      Toplam sepet tutarınız:
+                    </span>
+                    <PriceCard balance={totalProductPrice} />
+                  </div>
+                  <div className="mywallet-balance-item-container">
+                    <span className="mw-balance-item-title">
+                      Kalan bakiyeniz:
+                    </span>
+                    <PriceCard balance={userBalance} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="my-wallet-bottom-container">
+              <div className="expenses-container">
+                <span className="my-wallet-product-title">
+                  Harcamalarınızın Dağılımı
+                </span>
+                <div className="expenses-price">
+                  <span className="mw-balance-item-title">
+                    Toplam harcamanız:
+                  </span>
+                  <PriceCard
+                    priceCardStyle={"expenses-inside"}
+                    balance={totalProductPrice}
+                  />
+                </div>
+              </div>
+              <div className="chart-container">
+                <LineBarChart productPrices={productPrices} labels={labels} />
+              </div>
+            </div>
+            <span className="confirm-basket-button">Sepeti Onayla</span>
           </div>
-        </div>
-        <span className="confirm-basket-button">Sepeti Onayla</span>
-      </div>
+        </>
+      )}
     </div>
   );
 };
