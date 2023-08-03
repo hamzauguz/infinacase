@@ -3,23 +3,30 @@ import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
 import PriceCard from "../../components/price-card";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchConfirmProduct } from "../../store/confirmProductSlice";
+import {
+  fetchConfirmProduct,
+  updateConfirmProduct,
+} from "../../store/confirmProductSlice";
 import { filterItem } from "../../helpers/filterItem";
 import LineBarChart from "../../components/line-bar-chart";
 import { getproductPricesByCategory } from "../../helpers/chart-helpers";
 
 import "./Styles.MyWallet.css";
 import { ThreeCircles } from "react-loader-spinner";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
   const [confirmProducts, setConfirmProducts] = useState([]);
+  const [userBasketId, setUserBasketId] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     dispatch(fetchConfirmProduct())
       .then((products) => {
+        setUserBasketId(products.payload.id);
         setConfirmProducts(products.payload.basket.basket);
         setLoading(false);
       })
@@ -50,6 +57,53 @@ const MyWallet = () => {
   );
 
   const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
+
+  const handleIncrementClick = (index) => {
+    const updatedProducts = confirmProducts.map((product, i) =>
+      i === index ? { ...product, quantity: product.quantity + 1 } : product
+    );
+    setConfirmProducts(updatedProducts);
+  };
+
+  const handleDecrementClick = (productItem) => {
+    if (productItem.quantity > 1) {
+      const updatedProducts = confirmProducts.map((product, i) => {
+        if (productItem.id === product.id) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      });
+      setConfirmProducts(updatedProducts);
+    } else {
+      Swal.fire({
+        title: "Sil",
+        text: `Sepetteki ürününü silmek istiyor musunuz?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        iconColor: "#84c7c4",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const deletedProduct = confirmProducts.filter(
+            (product) => product.id !== productItem.id
+          );
+
+          setConfirmProducts(deletedProduct);
+        }
+      });
+    }
+  };
+
+  const handleConfirmBasket = async (id) => {
+    toast.loading("Sepetteki ürünleriniz güncelleniyor...");
+    await dispatch(updateConfirmProduct({ id, basket: confirmProducts })).then(
+      () => {
+        toast.dismiss();
+        toast.success("Sepetteki ürünleriniz güncellendi.");
+      }
+    );
+  };
 
   return (
     <div>
@@ -92,8 +146,10 @@ const MyWallet = () => {
                         productPrice={item.product.price.toFixed(2)}
                         productQuantity={item.product.quantity}
                         amount={item.quantity}
-                        disabledProduct={true}
+                        disabledProduct={item.quantity < item.product.quantity}
                         disabledDecrement={true}
+                        onIncrementClick={() => handleIncrementClick(key)}
+                        onDecrementClick={() => handleDecrementClick(item)}
                       />
                     );
                   })}
@@ -143,7 +199,12 @@ const MyWallet = () => {
                 <LineBarChart productPrices={productPrices} labels={labels} />
               </div>
             </div>
-            <span className="confirm-basket-button">Sepeti Onayla</span>
+            <span
+              onClick={() => handleConfirmBasket(userBasketId)}
+              className="confirm-basket-button"
+            >
+              Sepeti Onayla
+            </span>
           </div>
         </>
       )}

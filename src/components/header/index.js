@@ -46,7 +46,7 @@ const Header = () => {
     });
   };
 
-  const userBalance = balanceData?.balance.balance;
+  const userBalance = balanceData ? balanceData.balance.balance : 0;
 
   return (
     <div className="Navbar">
