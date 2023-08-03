@@ -75,19 +75,11 @@ const confirmProductSlice = createSlice({
       .addCase(fetchConfirmProduct.fulfilled, (state, action) => {
         state.productsArray = action.payload;
       })
-      .addCase(addConfirmProductToFirestore.fulfilled, (state, action) => {
-        state.productsArray.push(action.payload);
-      })
-      .addCase(deleteConfirmProduct.fulfilled, (state, action) => {
-        state.productsArray = state.productsArray.filter(
-          (basket) => basket.id !== action.payload
-        );
-      })
+      .addCase(addConfirmProductToFirestore.fulfilled)
+      .addCase(deleteConfirmProduct.fulfilled)
       .addCase(updateConfirmProduct.fulfilled, (state, action) => {
         const { id, basket } = action.payload;
-
         const basketIndex = basket.findIndex((item) => item.id === id);
-
         if (basketIndex !== -1) {
           basket.basket[basketIndex] = { id: id, basket: basket };
         }
