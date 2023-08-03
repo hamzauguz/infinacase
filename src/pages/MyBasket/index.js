@@ -10,7 +10,6 @@ import {
   removeItem,
 } from "../../store/cartSlice";
 
-import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { selectTotalPrice } from "../../store/selectors";
@@ -22,6 +21,7 @@ import {
 } from "../../store/confirmProductSlice";
 
 import "./Styles.MyBasket.css";
+import { showConfirmationDialog } from "../../helpers/helpers";
 
 const MyBasket = () => {
   const dispatch = useDispatch();
@@ -73,20 +73,15 @@ const MyBasket = () => {
 
   const removeProduct = (amount, item) => {
     if (amount === 1) {
-      Swal.fire({
-        title: "Sil",
-        text: `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        iconColor: "#84c7c4",
-      }).then((result) => {
-        if (result.isConfirmed) {
+      showConfirmationDialog(
+        "Sil",
+        `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,
+        "question",
+        () => {
           dispatch(removeItem(item.id));
           toast.success(`${item.product.title} ürünü başarıyla silindi`);
         }
-      });
+      );
     } else if (amount > 1) {
       dispatch(decrement(item.id));
     }
