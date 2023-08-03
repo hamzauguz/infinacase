@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../firebase/config";
+import { selectCurrentUserEmail } from "./selectors";
 
 export const addBalanceToFirestore = createAsyncThunk(
   "balance/addBalanceToFirestore",
@@ -21,15 +22,20 @@ export const addBalanceToFirestore = createAsyncThunk(
 
 export const fetchBalance = createAsyncThunk(
   "balance/fetchBalance",
-  async () => {
+  async (_, { getState }) => {
+    const currentUserEmail = selectCurrentUserEmail(getState());
     const querySnapshot = await getDocs(collection(db, "userwallet"));
-    const balance = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      balance: doc.data(),
-    }));
+    const balance = querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        balance: doc.data(),
+      }))
+      .find((balance) => balance.balance.userEmail === currentUserEmail);
+
     return balance;
   }
 );
+
 export const updateBalanceAsync = createAsyncThunk(
   "balance/updateBalanceAsync",
   async (editedBalance) => {

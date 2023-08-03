@@ -8,3 +8,7 @@ export const selectTotalPrice = (state) =>
     (total, item) => total + item.product.price * item.quantity,
     0
   );
+
+export const selectBalanceState = (state) => state.balance;
+
+export const selectCurrentUserEmail = (state) => state.auth.user.email;
