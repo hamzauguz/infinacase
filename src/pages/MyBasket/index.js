@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HeaderButton from "../../components/header-button";
 import BasketProductCard from "../../components/basket-product-card";
-
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -13,21 +12,14 @@ import {
 
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-
 import { useNavigate } from "react-router-dom";
-import { getUserCollection } from "../../helpers/firebaseAuth";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-} from "firebase/firestore";
-import { db } from "../../firebase/config";
 import { selectTotalPrice } from "../../store/selectors";
-
 import { fetchBalance, updateBalance } from "../../store/balance";
-import { fetchConfirmProduct } from "../../store/confirmProductSlice";
+import {
+  addConfirmProductToFirestore,
+  deleteConfirmProduct,
+  fetchConfirmProduct,
+} from "../../store/confirmProductSlice";
 
 import "./Styles.MyBasket.css";
 
@@ -35,11 +27,14 @@ const MyBasket = () => {
   const dispatch = useDispatch();
 
   const [confirmProducts, setConfirmProducts] = useState([]);
+  const [userBasketId, setUserBasketId] = useState(null);
 
   useEffect(() => {
     dispatch(fetchConfirmProduct())
       .then((products) => {
+        setUserBasketId(products.payload.id);
         setConfirmProducts(products.payload.basket.basket);
+        console.log("products: ", products);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
@@ -94,47 +89,26 @@ const MyBasket = () => {
     }
   };
 
-  const isBasketNotEmpty = !!confirmProducts;
-
   const addToWallet = async () => {
+    let confirmproduct = {
+      userEmail: user.email,
+      basket: filteredBasketProducts,
+    };
+
     if (totalPrice > userBalance.balance.balance)
       return toast.error("Yetersiz Bakiye!");
-    const userBasketRef = getUserCollection(db, "userbasket");
-    if (!isBasketNotEmpty) {
-      await addDoc(userBasketRef, {
-        userEmail: user.email,
-        basket: filteredBasketProducts,
-      }).then(() => {
-        dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
 
-        dispatch(clear());
-        navigate("/mywallet");
-        toast.success("Sipariş verildi.");
-      });
-    } else {
-      const querySnapshot = await getDocs(collection(db, "userbasket"));
-      const userBasketDocs = querySnapshot.docs.filter(
-        (doc) => doc.data().userEmail === user.email
-      );
+    dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
 
-      if (userBasketDocs.length > 0) {
-        const docRefToDelete = doc(db, "userbasket", userBasketDocs[0].id);
-        await deleteDoc(docRefToDelete);
-      }
-
-      await addDoc(userBasketRef, {
-        userEmail: user.email,
-        basket: filteredBasketProducts,
-      }).then(() => {
-        dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
-
-        dispatch(clear());
-        navigate("/mywallet");
-        toast.success(
-          "Eski siparişlerinin kaldırılıp yeni siparişleriniz eklendi."
-        );
-      });
+    if (confirmProducts.length !== 0) {
+      dispatch(deleteConfirmProduct(userBasketId));
     }
+
+    dispatch(addConfirmProductToFirestore(confirmproduct)).then(() => {
+      toast.success("Sipariş verildi.");
+      navigate("/mywallet");
+      dispatch(clear());
+    });
   };
 
   return (
@@ -169,7 +143,6 @@ const MyBasket = () => {
                 productQuantity={item.product.quantity}
                 amount={amount}
                 disabledProduct={amount < item.product.quantity}
-                // disabledDecrement={!amount == 0}
                 onIncrementClick={() => {
                   productAmountState(amount, item);
                 }}
