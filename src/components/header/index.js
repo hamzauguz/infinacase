@@ -45,8 +45,11 @@ const Header = () => {
       replace: true,
     });
   };
+  const findBalance = balanceData?.find(
+    (item) => item.balance.userEmail === user.email
+  );
 
-  const userBalance = balanceData ? balanceData.balance.balance : 0;
+  const userBalance = findBalance ? findBalance.balance.balance : 0;
 
   return (
     <div className="Navbar">

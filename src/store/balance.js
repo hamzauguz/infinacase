@@ -25,12 +25,11 @@ export const fetchBalance = createAsyncThunk(
   async (_, { getState }) => {
     const currentUserEmail = selectCurrentUserEmail(getState());
     const querySnapshot = await getDocs(collection(db, "userwallet"));
-    const balance = querySnapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        balance: doc.data(),
-      }))
-      .find((balance) => balance.balance.userEmail === currentUserEmail);
+    const balance = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      balance: doc.data(),
+    }));
+    // .find((balance) => balance.balance.userEmail === currentUserEmail);
 
     return balance;
   }

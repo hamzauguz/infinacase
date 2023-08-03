@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import store, { persistor } from "../store";
 import { login as loginHandle, logout as logoutHandle } from "../store/auth";
 import { clear } from "../store/cartSlice";
+import { fetchBalance } from "../store/balance";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAjnoiyMGTqEKE8t5s4PHfFkx7S_HVKcBA",
@@ -36,4 +37,12 @@ onAuthStateChanged(auth, (user) => {
     store.dispatch(logoutHandle());
     store.dispatch(clear());
   }
+});
+
+onSnapshot(collection(db, "userwallet"), (querySnapshot) => {
+  const updatedBalances = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    balance: doc.data(),
+  }));
+  store.dispatch(fetchBalance.fulfilled(updatedBalances));
 });

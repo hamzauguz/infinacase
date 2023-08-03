@@ -52,13 +52,16 @@ const MyBasket = () => {
   const balanceData = useSelector((state) => state.balance.balanceArray);
   const totalPrice = useSelector(selectTotalPrice);
 
-  const userBalance = balanceData;
-
   const filteredBasketProducts = myBasketProducts.filter(
     (item) => item.quantity > 0
   );
+  const findBalance = balanceData?.find(
+    (item) => item.balance.userEmail === user.email
+  );
 
-  const newBalance = userBalance.balance.balance - totalPrice;
+  const userBalance = findBalance ? findBalance.balance.balance : 0;
+  const newBalance = userBalance - totalPrice;
+  console.log("newbalance: ", newBalance);
 
   const productAmountState = (amount, item) => {
     if (amount === 0) {
@@ -95,10 +98,9 @@ const MyBasket = () => {
       basket: filteredBasketProducts,
     };
 
-    if (totalPrice > userBalance.balance.balance)
-      return toast.error("Yetersiz Bakiye!");
+    if (totalPrice > userBalance) return toast.error("Yetersiz Bakiye!");
 
-    dispatch(updateBalance({ id: userBalance.id, balance: newBalance }));
+    dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
 
     if (confirmProducts.length !== 0) {
       dispatch(deleteConfirmProduct(userBasketId));

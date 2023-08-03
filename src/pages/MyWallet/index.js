@@ -15,12 +15,14 @@ import "./Styles.MyWallet.css";
 import { ThreeCircles } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { updateBalance } from "../../store/balance";
 
 const MyWallet = () => {
   const dispatch = useDispatch();
   const [confirmProducts, setConfirmProducts] = useState([]);
   const [userBasketId, setUserBasketId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setLoading(true);
@@ -38,7 +40,11 @@ const MyWallet = () => {
 
   const balanceData = useSelector((state) => state.balance.balanceArray);
 
-  const userBalance = balanceData.balance.balance;
+  const findBalance = balanceData?.find(
+    (item) => item.balance.userEmail === user.email
+  );
+
+  const userBalance = findBalance ? findBalance.balance.balance : 0;
 
   const totalProductPrice = confirmProducts.reduce(
     (total, item) => total + item.quantity * item.product.price,
@@ -99,6 +105,12 @@ const MyWallet = () => {
     toast.loading("Sepetteki ürünleriniz güncelleniyor...");
     await dispatch(updateConfirmProduct({ id, basket: confirmProducts })).then(
       () => {
+        dispatch(
+          updateBalance({
+            id: findBalance.id,
+            balance: userBalance - totalProductPrice,
+          })
+        );
         toast.dismiss();
         toast.success("Sepetteki ürünleriniz güncellendi.");
       }

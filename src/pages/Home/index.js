@@ -55,7 +55,6 @@ const Home = () => {
         dispatch(increment(item.id));
       }
     } else {
-      // User is not logged in, navigate to the login page
       toast.warning("Ürün eklemek için giriş yapmanız gerekli.", {
         position: "top-center",
       });
