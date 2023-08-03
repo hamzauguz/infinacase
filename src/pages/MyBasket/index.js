@@ -30,15 +30,10 @@ const MyBasket = () => {
   const [userBasketId, setUserBasketId] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchConfirmProduct())
-      .then((products) => {
-        setUserBasketId(products.payload.id);
-        setConfirmProducts(products.payload.basket.basket);
-        console.log("products: ", products);
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
+    dispatch(fetchConfirmProduct()).then((products) => {
+      setUserBasketId(products.payload.id);
+      setConfirmProducts(products.payload.basket.basket);
+    });
   }, [dispatch]);
 
   useEffect(() => {
@@ -61,7 +56,6 @@ const MyBasket = () => {
 
   const userBalance = findBalance ? findBalance.balance.balance : 0;
   const newBalance = userBalance - totalPrice;
-  console.log("newbalance: ", newBalance);
 
   const productAmountState = (amount, item) => {
     if (amount === 0) {
