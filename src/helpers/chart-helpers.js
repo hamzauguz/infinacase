@@ -74,3 +74,5 @@ export const getproductPricesByCategory = (categoryNames, basketItems) => {
   });
   return productPrices;
 };
+
+export const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
