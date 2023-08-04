@@ -67,9 +67,7 @@ const confirmProductSlice = createSlice({
   initialState: {
     productsArray: [],
   },
-  // reducers: {
 
-  // },
   extraReducers: (builder) => {
     builder
       .addCase(fetchConfirmProduct.fulfilled, (state, action) => {

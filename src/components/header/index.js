@@ -82,7 +82,6 @@ const Header = () => {
                     <PriceCard
                       priceCardStyle={"header-wallet-style"}
                       balance={userBalance}
-                      // balance={1000}
                     />
                   </div>
                 </>
