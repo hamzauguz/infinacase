@@ -9,6 +9,7 @@ import PriceCard from "../price-card";
 import { fetchBalance } from "../../store/balance";
 
 import "./Styles.Header.css";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     setIsOpen(false);
+    toast.success("Çıkış yapıldı.");
     await logout();
     navigate("/login", {
       replace: true,
