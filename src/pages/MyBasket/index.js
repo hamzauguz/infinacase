@@ -30,10 +30,15 @@ const MyBasket = () => {
   const [userBasketId, setUserBasketId] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchConfirmProduct()).then((products) => {
-      setUserBasketId(products.payload.id);
-      setConfirmProducts(products.payload.basket.basket);
-    });
+    const fetchData = async () => {
+      try {
+        const products = await dispatch(fetchConfirmProduct());
+        setUserBasketId(products.payload.id);
+        setConfirmProducts(products.payload.basket.basket);
+      } catch (error) {}
+    };
+
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
