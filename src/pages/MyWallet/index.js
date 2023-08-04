@@ -34,16 +34,20 @@ const MyWallet = () => {
 
   useEffect(() => {
     setLoading(true);
-    dispatch(fetchConfirmProduct())
-      .then((products) => {
+    const fetchData = async () => {
+      try {
+        const products = await dispatch(fetchConfirmProduct());
         setUserBasketId(products.payload.id);
         setConfirmProducts(products.payload.basket.basket);
+        console.log(products);
         setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const balanceData = useSelector((state) => state.balance.balanceArray);
   const findBalance = balanceData?.find(
