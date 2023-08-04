@@ -5,7 +5,9 @@ import {
   collection,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { db } from "../firebase/config";
@@ -24,12 +26,15 @@ export const fetchBalance = createAsyncThunk(
   "balance/fetchBalance",
   async (_, { getState }) => {
     const currentUserEmail = selectCurrentUserEmail(getState());
-    const querySnapshot = await getDocs(collection(db, "userwallet"));
+    let q = query(
+      collection(db, "userwallet"),
+      where("userEmail", "==", currentUserEmail)
+    );
+    const querySnapshot = await getDocs(q);
     const balance = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       balance: doc.data(),
     }));
-    // .find((balance) => balance.balance.userEmail === currentUserEmail);
 
     return balance;
   }
