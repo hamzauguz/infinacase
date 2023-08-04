@@ -35,7 +35,6 @@ const MyBasket = () => {
         const products = await dispatch(fetchConfirmProduct());
         setUserBasketId(products.payload.id);
         setConfirmProducts(products.payload.basket.basket);
-        console.log(products);
       } catch (error) {}
     };
 

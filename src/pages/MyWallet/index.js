@@ -39,7 +39,7 @@ const MyWallet = () => {
         const products = await dispatch(fetchConfirmProduct());
         setUserBasketId(products.payload.id);
         setConfirmProducts(products.payload.basket.basket);
-        console.log(products);
+
         setLoading(false);
       } catch (error) {
         setLoading(false);
