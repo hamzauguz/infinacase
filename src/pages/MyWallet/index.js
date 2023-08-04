@@ -94,6 +94,8 @@ const MyWallet = () => {
   };
 
   const handleConfirmBasket = async (id) => {
+    if (totalProductPrice(confirmProducts) > userBalance)
+      return toast.error("Yetersiz bakiye.");
     toast.loading("Sepetteki ürünleriniz güncelleniyor...");
     await dispatch(updateConfirmProduct({ id, basket: confirmProducts })).then(
       () => {
