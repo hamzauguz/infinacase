@@ -3,7 +3,7 @@ export const chartData = (productPrices, labels, barThickness) => {
     labels,
     datasets: [
       {
-        label: "Toplam",
+        label: "Totally",
         data: productPrices,
         backgroundColor: "#D9D9D9",
         borderRadius: 8,
@@ -15,7 +15,7 @@ export const chartData = (productPrices, labels, barThickness) => {
           font: {
             weight: "600",
           },
-          formatter: (value) => value.toFixed(2) + " TL",
+          formatter: (value) => value.toFixed(2) + " $",
         },
       },
     ],
@@ -75,4 +75,10 @@ export const getproductPricesByCategory = (categoryNames, basketItems) => {
   return productPrices;
 };
 
-export const labels = ["Teknoloji", "Giyim", "Kozmetik", "Mobilya", "Aksesuar"];
+export const labels = [
+  "Technology",
+  "Clothing",
+  "Cosmetics",
+  "Furniture",
+  "Accessories",
+];

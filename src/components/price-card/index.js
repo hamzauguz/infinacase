@@ -8,7 +8,7 @@ const PriceCard = ({ balance, priceCardStyle }) => {
 
   return (
     <div className={`price-card-container ${priceCardStyle}`}>
-      {formattedBalance} TL
+      {formattedBalance} $
     </div>
   );
 };

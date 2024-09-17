@@ -73,12 +73,12 @@ const MyBasket = () => {
   const removeProduct = (amount, item) => {
     if (amount === 1) {
       showConfirmationDialog(
-        "Sil",
-        `Sepetteki ${item.product.title} ürününü silmek istiyor musunuz?`,
+        "Delete",
+        `Are you sure you want to remove ${item.product.title} from the cart?`,
         "question",
         () => {
           dispatch(removeItem(item.id));
-          toast.success(`${item.product.title} ürünü başarıyla silindi`);
+          toast.success(`${item.product.title} was successfully removed`);
         }
       );
     } else if (amount > 1) {
@@ -92,7 +92,7 @@ const MyBasket = () => {
       basket: filteredBasketProducts,
     };
 
-    if (totalPrice > userBalance) return toast.error("Yetersiz Bakiye!");
+    if (totalPrice > userBalance) return toast.error("Insufficient Balance!");
 
     dispatch(updateBalance({ id: findBalance.id, balance: newBalance }));
 
@@ -101,7 +101,7 @@ const MyBasket = () => {
     }
 
     dispatch(addConfirmProductToFirestore(confirmproduct)).then(() => {
-      toast.success("Sipariş verildi.");
+      toast.success("Order placed.");
       navigate("/mywallet");
       dispatch(clear());
     });
@@ -112,7 +112,7 @@ const MyBasket = () => {
       <div className="page-header-container">
         <HeaderButton
           src={require("../../assets/images/basket.png")}
-          title={"Sepetim"}
+          title={"My Basket"}
         />
       </div>
       <div className="mybasket-card-main">
@@ -151,11 +151,11 @@ const MyBasket = () => {
         )}
         {filteredBasketProducts.length === 0 ? (
           <span onClick={() => navigate("/")} className="confirm-basket-button">
-            Alişverişe Devam Et
+            Continue Shopping
           </span>
         ) : (
           <span onClick={() => addToWallet()} className="confirm-basket-button">
-            Sepeti Onayla
+            Confirm Basket
           </span>
         )}
       </div>

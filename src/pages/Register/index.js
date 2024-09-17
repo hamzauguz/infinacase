@@ -37,7 +37,7 @@ const Register = () => {
       formData.password,
       formData.displayName
     ).catch(() => {
-      toast.error("Hatalı");
+      toast.error("Error");
     });
   };
 
@@ -45,28 +45,28 @@ const Register = () => {
     <div className="login-container">
       <div className="login-right-container register-right-container">
         <span className="login-right-title">
-          En uygun fiyatlara ulaşmak <br /> için kayıt yapın!
+          Sign up to access the best prices!
         </span>
         <div className="register-input-container">
           <LabelWithInput
             name={"displayName"}
-            value={formData.displayNamea}
+            value={formData.displayName}
             onChange={handleInputChange}
-            labelTitle={"Adınız ve Soyadınız"}
+            labelTitle={"Your Name and Surname"}
             type={"text"}
           />
           <LabelWithInput
             name={"email"}
             value={formData.email}
             onChange={handleInputChange}
-            labelTitle={"E-Mailiniz"}
+            labelTitle={"Your Email"}
             type={"text"}
           />
           <LabelWithInput
             name={"password"}
             value={formData.password}
             onChange={handleInputChange}
-            labelTitle={"Şifreniz"}
+            labelTitle={"Your Password"}
             type={"password"}
           />
         </div>
@@ -75,13 +75,13 @@ const Register = () => {
             onClick={() => handleRegister()}
             className="login-register-button"
           >
-            Kayıt Ol
+            Sign Up
           </span>
           <span
             onClick={() => navigate("/login")}
             className="login-register-button"
           >
-            Giriş Yap
+            Log In
           </span>
         </div>
       </div>

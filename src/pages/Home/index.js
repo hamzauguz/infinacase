@@ -46,7 +46,7 @@ const Home = () => {
 
   const productAmountState = (amount, item) => {
     if (user) {
-      toast.success("Ürün Eklendi", {
+      toast.success("Product Added", {
         position: "top-center",
       });
       if (amount === 0) {
@@ -55,7 +55,7 @@ const Home = () => {
         dispatch(increment(item.id));
       }
     } else {
-      toast.warning("Ürün eklemek için giriş yapmanız gerekli.", {
+      toast.warning("You need to log in to add products.", {
         position: "top-center",
       });
       navigate("/login");
@@ -100,7 +100,7 @@ const Home = () => {
           <RiSearch2Line size={32} className="input-search-icon" />
           <input
             onChange={handleSearch}
-            placeholder="Ne alsan?"
+            placeholder="What are you looking for?"
             className="search-input"
           />
         </div>
@@ -132,7 +132,7 @@ const Home = () => {
       ) : (
         <div className="products-container">
           {filteredProducts.length === 0 ? (
-            <h1>Ürün bulunamadı.</h1>
+            <h1>No products found.</h1>
           ) : (
             <>
               {filteredProducts.map((item, key) => {
@@ -153,7 +153,7 @@ const Home = () => {
                       productAmountState(amount, item);
                     }}
                     onDecrementClick={() => {
-                      toast.success("Ürün Çıkartıldı ", {
+                      toast.success("Product Removed", {
                         position: "top-center",
                       });
                       dispatch(decrement(item.id));
