@@ -26,7 +26,7 @@ const Login = () => {
   const handleLogin = async () => {
     const user = await login(formData.email, formData.password);
     if (user) {
-      toast.success("Giriş başarılı.");
+      toast.success("Login successful.");
       navigate("/", {
         replace: true,
       });
@@ -44,33 +44,33 @@ const Login = () => {
 
       <div className="login-right-container">
         <span className="login-right-title">
-          En uygun fiyatlara ulaşmak <br /> için giriş yapın!
+          Log in to access the best prices! <br />
         </span>
         <div className="login-input-container">
           <LabelWithInput
             name={"email"}
             value={formData.email}
             onChange={handleInputChange}
-            labelTitle={"E-Mailiniz"}
+            labelTitle={"Your Email"}
             type={"text"}
           />
           <LabelWithInput
             name={"password"}
             value={formData.password}
             onChange={handleInputChange}
-            labelTitle={"Şifreniz"}
+            labelTitle={"Your Password"}
             type={"password"}
           />
         </div>
         <div>
           <span onClick={() => handleLogin()} className="login-register-button">
-            Giriş Yap
+            Log In
           </span>
           <span
             onClick={() => navigate("/register")}
             className="login-register-button"
           >
-            Kayıt Ol
+            Register
           </span>
         </div>
       </div>

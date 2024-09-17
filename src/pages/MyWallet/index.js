@@ -79,8 +79,8 @@ const MyWallet = () => {
       setConfirmProducts(updatedProducts);
     } else {
       showConfirmationDialog(
-        "Sil",
-        "Sepetteki ürününü silmek istiyor musunuz?",
+        "Delete",
+        "Are you sure you want to remove this product from the basket?",
         "question",
         () => {
           const deletedProduct = confirmProducts.filter(
@@ -95,8 +95,8 @@ const MyWallet = () => {
 
   const handleConfirmBasket = async (id) => {
     if (totalProductPrice(confirmProducts) > userBalance)
-      return toast.error("Yetersiz bakiye.");
-    toast.loading("Sepetteki ürünleriniz güncelleniyor...");
+      return toast.error("Insufficient balance.");
+    toast.loading("Updating the products in your basket...");
     await dispatch(updateConfirmProduct({ id, basket: confirmProducts })).then(
       () => {
         dispatch(
@@ -109,7 +109,7 @@ const MyWallet = () => {
           dispatch(deleteConfirmProduct(userBasketId));
         }
         toast.dismiss();
-        toast.success("Sepetteki ürünleriniz güncellendi.");
+        toast.success("Your basket has been updated.");
       }
     );
   };
@@ -132,7 +132,7 @@ const MyWallet = () => {
               <HeaderButton
                 headerButtonStyle={"mywallet-header-button"}
                 src={require("../../assets/images/wallet.png")}
-                title={"Cüzdanım"}
+                title={"My Wallet"}
               />
               <PriceCard balance={userBalance} />
             </div>
@@ -141,7 +141,7 @@ const MyWallet = () => {
             <div className="basket-balance-container">
               <div className="my-wallet-product-main">
                 <span className="my-wallet-product-title">
-                  Sepetinizdeki Ürünler ({totalQuantity(confirmProducts)})
+                  Products in Your Basket ({totalQuantity(confirmProducts)})
                 </span>
                 {confirmProducts &&
                   confirmProducts?.map((item, key) => {
@@ -165,24 +165,24 @@ const MyWallet = () => {
               </div>
               <div className="mywallet-balance-main">
                 <span className="my-wallet-product-title">
-                  Bakiye Bilgileri
+                  Balance Information
                 </span>
                 <div className="mywallet-balance-container">
                   <div className="mywallet-balance-item-container">
                     <span className="mw-balance-item-title">
-                      Toplam bakiyeniz:
+                      Your Total Balance:
                     </span>
                     <PriceCard balance={beforeBalance} />
                   </div>
                   <div className="mywallet-balance-item-container">
                     <span className="mw-balance-item-title">
-                      Toplam sepet tutarınız:
+                      Total Basket Amount:
                     </span>
                     <PriceCard balance={totalProductPrice(confirmProducts)} />
                   </div>
                   <div className="mywallet-balance-item-container">
                     <span className="mw-balance-item-title">
-                      Kalan bakiyeniz:
+                      Remaining Balance:
                     </span>
                     <PriceCard balance={userBalance} />
                   </div>
@@ -192,11 +192,11 @@ const MyWallet = () => {
             <div className="my-wallet-bottom-container">
               <div className="expenses-container">
                 <span className="my-wallet-product-title">
-                  Harcamalarınızın Dağılımı
+                  Distribution of Your Expenses
                 </span>
                 <div className="expenses-price">
                   <span className="mw-balance-item-title">
-                    Toplam harcamanız:
+                    Your Total Expenses:
                   </span>
                   <PriceCard
                     priceCardStyle={"expenses-inside"}
@@ -212,7 +212,7 @@ const MyWallet = () => {
               onClick={() => handleConfirmBasket(userBasketId)}
               className="confirm-basket-button"
             >
-              Sepeti Onayla
+              Confirm Basket
             </span>
           </div>
         </>

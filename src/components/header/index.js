@@ -41,7 +41,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     setIsOpen(false);
-    toast.success("Çıkış yapıldı.");
+    toast.success("Logged out successfully.");
     await logout();
     navigate("/login", {
       replace: true,
@@ -67,7 +67,7 @@ const Header = () => {
             <HeaderButton
               onClick={() => handleLogout()}
               src={require("../../assets/images/avatar.png")}
-              title={avatarButton ? "Çıkış Yap" : user?.fullName}
+              title={avatarButton ? "Log Out" : user?.fullName}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             />
@@ -80,7 +80,7 @@ const Header = () => {
               title={
                 <>
                   <div className="header-wallet-container">
-                    <span>Cüzdanım</span>
+                    <span>My Wallet</span>
                     <PriceCard
                       priceCardStyle={"header-wallet-style"}
                       balance={userBalance}
@@ -91,7 +91,7 @@ const Header = () => {
             />
             <HeaderButton
               src={require("../../assets/images/basket.png")}
-              title={"Sepetim"}
+              title={"My Basket"}
               onClick={() => {
                 setIsOpen(false);
                 navigate("/mybasket");
@@ -107,7 +107,7 @@ const Header = () => {
               navigate("/login");
             }}
             src={require("../../assets/images/avatar.png")}
-            title={"Giriş Yap"}
+            title={"Log In"}
           />
         )}
       </div>

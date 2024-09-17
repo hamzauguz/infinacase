@@ -1,17 +1,17 @@
 export const filterItem = [
   {
-    categoryName: "Teknoloji",
+    categoryName: "Technology",
   },
   {
-    categoryName: "Giyim",
+    categoryName: "Clothing",
   },
   {
-    categoryName: "Kozmetik",
+    categoryName: "Cosmetics",
   },
   {
-    categoryName: "Mobilya",
+    categoryName: "Furniture",
   },
   {
-    categoryName: "Aksesuar",
+    categoryName: "Accessories",
   },
 ];

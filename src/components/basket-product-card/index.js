@@ -22,7 +22,7 @@ const BasketProductCard = ({
         <div className="mybasket-left-title-card-container">
           <span className="mybasket-card-title">{productTitle}</span>
           <span className="mybasket-card-amount">
-            {productQuantity} Adetle Sınırlı
+            Limited to {productQuantity} pieces
           </span>
         </div>
       </div>
@@ -49,7 +49,7 @@ const BasketProductCard = ({
         </div>
 
         <span className={`mybasket-card-price ${mybasketCardPriceStyle}`}>
-          {productPrice} TL
+          {productPrice} $
         </span>
       </div>
     </div>
