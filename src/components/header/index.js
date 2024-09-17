@@ -61,7 +61,7 @@ const Header = () => {
         src={require("../../assets/images/headericon.png")}
       />
 
-      <div className={`nav-items ${isOpen && "open"}`}>
+      <div style={{ zIndex: 1 }} className={`nav-items ${isOpen && "open"}`}>
         {user ? (
           <>
             <HeaderButton

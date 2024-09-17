@@ -97,7 +97,11 @@ const Home = () => {
     <div>
       <div className="search-filter-container">
         <div className="input-with-icon-container">
-          <RiSearch2Line size={32} className="input-search-icon" />
+          <RiSearch2Line
+            style={{ zIndex: 0 }}
+            size={32}
+            className="input-search-icon"
+          />
           <input
             onChange={handleSearch}
             placeholder="What are you looking for?"
