@@ -8,12 +8,12 @@ import { clear } from "../store/cartSlice";
 import { fetchBalance } from "../store/balance";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAjnoiyMGTqEKE8t5s4PHfFkx7S_HVKcBA",
-  authDomain: "infinacase.firebaseapp.com",
-  projectId: "infinacase",
-  storageBucket: "infinacase.appspot.com",
-  messagingSenderId: "183630088918",
-  appId: "1:183630088918:web:eb2eebfcc974ff736e5777",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
