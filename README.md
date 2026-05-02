@@ -4,7 +4,7 @@ A modern, responsive, and clean **login page implementation** built based on a g
 
 ## 🔗 Links
 
-- **Live Demo:** https://hamzauguz.github.io/login  
+- **Live Demo:** https://hamzauguz.github.io/infinacase  
 - **Figma Design:** https://www.figma.com/design/RnJT3EdU3i0404AmsAdV1p/TestCase  
 - **Repository:** https://github.com/hamzauguz/infinacase  
 
